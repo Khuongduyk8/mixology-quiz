@@ -39,7 +39,7 @@
             <label>학번 (ID 5~6자리 - 예: 90216, 120216):</label>
             <input type="number" id="studentId" placeholder="학년+반+번호 (5~6자리)">
         </div>
-        <div class="country-title">언어選択 (Select Country):</div>
+        <div class="country-title">언어 선택 (Select Country):</div>
         <div class="country-grid">
             <button class="country-btn" onclick="selectCountry('베트남', this)">🇻🇳 베트남어</button>
             <button class="country-btn" onclick="selectCountry('러시아', this)">🇷🇺 러시아어</button>
@@ -60,8 +60,7 @@
     <div class="container" id="result-screen">
         <h1>🎉 SUBMITTED! 🎉</h1>
         <div class="score-text" id="score-text">0 / 100</div>
-        <p id="result-comment" style="color: #94a3b8; line-height: 1.5;"></p>
-        <p style="color: #f43f5e; font-weight: bold; font-size: 13px; margin-top: 20px;">⚠️ 점수는 TV màn hình hiển thị trực tiếp!</p>
+        <p style="color: #f43f5e; font-weight: bold; font-size: 13px; margin-top: 20px;">⚠️ 점수는 TV 화면에 실시간으로 표시됩니다!</p>
     </div>
 
     <script>
@@ -74,7 +73,7 @@
                 { q: "Di sản thiên nhiên thế giới nổi tiếng của Việt Nam với hơn 3.000 hòn đảo đá vôi nhô lên trên biển là gì?", o: ["Hạ Long", "Sapa", "Mũi Né", "Phú Quốc"], a: 0 }
             ],
             '대한민국': [
-                { q: "한국의 대표적인 전통 발효 식품으로 영양이 Phu 부하며 매콤한 맛이 특징인 것은?", o: ["치즈", "김치", "단무지", "피클"], a: 1 },
+                { q: "한국의 대표적인 전통 발효 식품으로 영양이 풍부하며 매콤한 맛이 특징인 것은?", o: ["치즈", "김치", "단무지", "피클"], a: 1 },
                 { q: "조선시대 세종대왕이 백성들을 위해 창제한 독창적이고 과학적인 글자는?", o: ["한글", "한자", "가나", "알파벳"], a: 0 },
                 { q: "대한민국의 수도이자 정치, 경제, 문화의 중심지인 대도시의 이름은?", o: ["인천", "부산", "서울", "제주"], a: 2 },
                 { q: "남산 정상에 위치하여 서울 시내 전체의 아름다운 전경을 볼 수 있는 명소는?", o: ["63빌딩", "롯데월드타워", "N서울타워", "광화문"], a: 2 },
@@ -101,21 +100,21 @@
             if (!name || !idStr) { alert("모든 정보를 입력해주세요!"); return; }
             if (!selectedCountry) { alert("국가를 선택해주세요!"); return; }
 
-            let grade, classNum, studentNum;
+            let grade = "일반", classNum = "";
             if (idStr.length === 5) {
                 grade = parseInt(idStr.substring(0, 1));
                 classNum = parseInt(idStr.substring(1, 3));
-                studentNum = parseInt(idStr.substring(3, 5));
             } else if (idStr.length === 6) {
                 grade = parseInt(idStr.substring(0, 2));
                 classNum = parseInt(idStr.substring(2, 4));
-                studentNum = parseInt(idStr.substring(4, 6));
-            } else {
-                alert("ID phải đúng 5 hoặc 6 chữ số!");
-                return;
             }
 
-            extractedInfo = { id: idStr, name: name, displayClass: `${grade}학년 ${classNum}반` };
+            extractedInfo = { 
+                id: idStr, 
+                name: name, 
+                displayClass: idStr.length >= 5 ? `${grade}학년 ${classNum}반` : "일반" 
+            };
+            
             currentQuestions = [...(quizDatabase[selectedCountry] || quizDatabase['대한민국'])].sort(() => Math.random() - 0.5);
             
             document.getElementById('login-screen').style.display = 'none';
@@ -144,17 +143,23 @@
             document.getElementById('result-screen').style.display = 'block';
             document.getElementById('score-text').innerText = score + " / 100";
 
-            const payload = { id: extractedInfo.id, name: extractedInfo.name, class: extractedInfo.displayClass, score: score, time: Date.now() };
+            const payload = { 
+                id: extractedInfo.id, 
+                name: extractedInfo.name, 
+                class: extractedInfo.displayClass, 
+                score: score, 
+                time: Date.now() 
+            };
             
-            // Sử dụng KVDB công khai, không bị chặn CORS bởi bất kỳ điện thoại nào
-            fetch('https://kvdb.io/66wY8nE63wT7WfAsYwzE12/scores')
+            // Gọi cổng KVDB mở hoàn toàn không lo chặn mạng nội bộ/CORS
+            fetch('https://kvdb.io/W4Mh7N9bJqS8Vd2C5xYmZa/scores')
             .then(res => res.json())
-            .catch(() => { return {}; }) // Nếu chưa có dữ liệu thì trả về object trống
+            .catch(() => { return {}; })
             .then(oldData => {
                 let records = oldData || {};
                 records[extractedInfo.id] = payload;
                 
-                fetch('https://kvdb.io/66wY8nE63wT7WfAsYwzE12/scores', {
+                fetch('https://kvdb.io/W4Mh7N9bJqS8Vd2C5xYmZa/scores', {
                     method: 'POST',
                     body: JSON.stringify(records)
                 });
