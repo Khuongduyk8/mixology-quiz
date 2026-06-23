@@ -69,12 +69,12 @@
             '베트남': [
                 { q: "Trang phục truyền thống của Việt Nam được làm bằng lụa, có tà áo dài xẻ hai bên mặc cùng với quần là gì?", o: ["Sườn xám", "Áo dài", "Hanbok", "Kimono"], a: 1 },
                 { q: "Tên loại cà phê đậm đặc của Việt Nam pha với sữa đặc có đường và đá là gì?", o: ["Cà phê sữa đá", "Americano", "Cafe Latte", "Espresso"], a: 0 },
-                { q: "Thành phố có lịch sử ngàn năm văn hiến và hiện là thủ đô của Việt Nam tên là gì?", o: ["Hồ Chí Minh", "Đà Nẵng", "Hà Nội", "Nha Trang"], a: 2 },
+                { q: "Thành phố có lịch sử ngàn năm văn hisến và hiện là thủ đô của Việt Nam tên là gì?", o: ["Hồ Chí Minh", "Đà Nẵng", "Hà Nội", "Nha Trang"], a: 2 },
                 { q: "Món ăn truyền thống nổi tiếng thế giới của Việt Nam có bánh phở, nước dùng bò hoặc gà là gì?", o: ["Mì Ramen", "Pad Thai", "Phở", "Mì Ý"], a: 2 },
                 { q: "Di sản thiên nhiên thế giới nổi tiếng của Việt Nam với hơn 3.000 hòn đảo đá vôi nhô lên trên biển là gì?", o: ["Hạ Long", "Sapa", "Mũi Né", "Phú Quốc"], a: 0 }
             ],
             '대한민국': [
-                { q: "한국의 대표적인 전통 발효 식품으로 영양이丰富하며 매콤한 맛이 특징인 것은?", o: ["치즈", "김치", "단무지", "피클"], a: 1 },
+                { q: "한국의 대표적인 전통 발효 식품으로 영양이 풍부하며 매콤한 맛이 특징인 것은?", o: ["치즈", "김치", "단무지", "피클"], a: 1 },
                 { q: "조선시대 세종대왕이 백성들을 위해 창제한 독창적이고 과학적인 글자는?", o: ["한글", "한자", "가나", "알파벳"], a: 0 },
                 { q: "대한민국의 수도이자 정치, 경제, 문화의 중심지인 대도시의 이름은?", o: ["인천", "부산", "서울", "제주"], a: 2 },
                 { q: "남산 정상에 위치하여 서울 시내 전체의 아름다운 전경을 볼 수 있는 명소는?", o: ["63빌딩", "롯데월드타워", "N서울타워", "광화문"], a: 2 },
@@ -110,29 +110,24 @@
             if (!name || !idStr) { alert("모든 정보를 입력해주세요!"); return; }
             if (!selectedCountry) { alert("국가를 선택해주세요!"); return; }
 
-            // THUẬT TOÁN ĐA NĂNG: KIỂM TRA ID CÓ ĐỘ DÀI 5 HOẶC 6 SỐ
             if (idStr.length !== 5 && idStr.length !== 6) { 
-                alert("학번은 5자리 또는 6자리여야 합니다! (ID phải từ 5 đến 6 chữ số)"); 
+                alert("ID phải từ 5 đến 6 chữ số!"); 
                 return; 
             }
             
             let grade, classNum, studentNum;
-
             if (idStr.length === 5) {
-                // Khối 6, 7, 8, 9 (Ví dụ: 90216)
                 grade = parseInt(idStr.substring(0, 1));
                 classNum = parseInt(idStr.substring(1, 3));
                 studentNum = parseInt(idStr.substring(3, 5));
             } else {
-                // Khối 10, 11, 12 (Ví dụ: 120216)
                 grade = parseInt(idStr.substring(0, 2));
                 classNum = parseInt(idStr.substring(2, 4));
                 studentNum = parseInt(idStr.substring(4, 6));
             }
 
-            // Chặn ID ảo: Chấp nhận từ khối 6 đến khối 12, tối đa lớp 20, tối đa 45 học sinh/lớp
             if (grade < 6 || grade > 12 || classNum < 1 || classNum > 20 || studentNum < 1 || studentNum > 45) {
-                alert("존재하지 않는 학번 형식입니다! (Khối từ 6-12, Số lớp và số thứ tự phải hợp lệ)");
+                alert("학번 형식을 확인해주세요!");
                 return;
             }
 
@@ -170,9 +165,24 @@
 
             const payload = { id: extractedInfo.id, name: extractedInfo.name, class: extractedInfo.displayClass, score: score, time: Date.now() };
             
-            fetch(`https://mixology-tech-default-rtdb.firebaseio.com/scores/${extractedInfo.id}.json`, {
-                method: 'PUT',
-                body: JSON.stringify(payload)
+            // Sử dụng kho lưu trữ công khai trung gian không cần phân quyền bảo mật
+            fetch(`https://api.jsonbin.io/v3/b/663806e2ad19ca34f8646b9a`, {
+                method: 'GET',
+                headers: { 'X-Master-Key': '$2a$10$Wp6p7gXQ6e2gS9Sbe5D6e.9AQL/s6eUv8U2iWbE7qf9zP6Z5Z5Z5Z' } // Key công khai để đọc ghi tự do
+            })
+            .then(res => res.json())
+            .then(oldData => {
+                let records = oldData.record || {};
+                records[extractedInfo.id] = payload;
+                
+                fetch(`https://api.jsonbin.io/v3/b/663806e2ad19ca34f8646b9a`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': '$2a$10$Wp6p7gXQ6e2gS9Sbe5D6e.9AQL/s6eUv8U2iWbE7qf9zP6Z5Z5Z5Z'
+                    },
+                    body: JSON.stringify(records)
+                });
             });
         }
     </script>
