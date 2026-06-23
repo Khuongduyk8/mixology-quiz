@@ -27,19 +27,15 @@
     <div class="subtitle">MIXOLOGY TECH CLUB FESTIVAL</div>
 
     <div class="board" id="board-container">
-        <div style="text-align: center; padding: 50px; color: #64748b; font-size: 18px;">⏳ Đang đồng bộ hóa hệ thống dữ liệu...</div>
+        <div style="text-align: center; padding: 50px; color: #64748b; font-size: 18px;">⏳ Đang kết nối mạng thời gian thực...</div>
     </div>
 
     <script>
         function listenToScores() {
             setInterval(() => {
-                fetch('https://api.jsonbin.io/v3/b/663806e2ad19ca34f8646b9a/latest', {
-                    method: 'GET',
-                    headers: { 'X-Master-Key': '$2a$10$Wp6p7gXQ6e2gS9Sbe5D6e.9AQL/s6eUv8U2iWbE7qf9zP6Z5Z5Z5Z' }
-                })
+                fetch('https://kvdb.io/66wY8nE63wT7WfAsYwzE12/scores')
                 .then(res => res.json())
-                .then(resData => {
-                    let data = resData.record;
+                .then(data => {
                     if (!data || Object.keys(data).length === 0) {
                         document.getElementById('board-container').innerHTML = `<div style="text-align: center; padding: 50px; color: #64748b;">⏳ Chưa có thí sinh nào nộp bài.</div>`;
                         return;
@@ -51,11 +47,12 @@
 
                     if (scoreArray.length === 0) return;
 
+                    // Sắp xếp điểm cao xếp trước, nộp sớm xếp trước
                     scoreArray.sort((a, b) => b.score - a.score || a.time - b.time);
                     renderLeaderboard(scoreArray.slice(0, 10));
                 })
-                .catch(err => console.log("Đang chờ mạng..."));
-            }, 3000); // Quét liên tục mỗi 3 giây
+                .catch(err => console.log("Đang tải dữ liệu mạng..."));
+            }, 2000); // Tự động cập nhật mỗi 2 giây
         }
 
         function renderLeaderboard(topList) {

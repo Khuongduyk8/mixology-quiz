@@ -39,7 +39,7 @@
             <label>학번 (ID 5~6자리 - 예: 90216, 120216):</label>
             <input type="number" id="studentId" placeholder="학년+반+번호 (5~6자리)">
         </div>
-        <div class="country-title">언어 선택 (Select Country):</div>
+        <div class="country-title">언어選択 (Select Country):</div>
         <div class="country-grid">
             <button class="country-btn" onclick="selectCountry('베트남', this)">🇻🇳 베트남어</button>
             <button class="country-btn" onclick="selectCountry('러시아', this)">🇷🇺 러시아어</button>
@@ -61,7 +61,7 @@
         <h1>🎉 SUBMITTED! 🎉</h1>
         <div class="score-text" id="score-text">0 / 100</div>
         <p id="result-comment" style="color: #94a3b8; line-height: 1.5;"></p>
-        <p style="color: #f43f5e; font-weight: bold; font-size: 13px; margin-top: 20px;">⚠️ 이미 응시하셨습니다. 점수는 TV 화면을 확인해주세요!</p>
+        <p style="color: #f43f5e; font-weight: bold; font-size: 13px; margin-top: 20px;">⚠️ 점수는 TV màn hình hiển thị trực tiếp!</p>
     </div>
 
     <script>
@@ -69,12 +69,12 @@
             '베트남': [
                 { q: "Trang phục truyền thống của Việt Nam được làm bằng lụa, có tà áo dài xẻ hai bên mặc cùng với quần là gì?", o: ["Sườn xám", "Áo dài", "Hanbok", "Kimono"], a: 1 },
                 { q: "Tên loại cà phê đậm đặc của Việt Nam pha với sữa đặc có đường và đá là gì?", o: ["Cà phê sữa đá", "Americano", "Cafe Latte", "Espresso"], a: 0 },
-                { q: "Thành phố có lịch sử ngàn năm văn hisến và hiện là thủ đô của Việt Nam tên là gì?", o: ["Hồ Chí Minh", "Đà Nẵng", "Hà Nội", "Nha Trang"], a: 2 },
+                { q: "Thành phố có lịch sử ngàn năm văn hiến và hiện là thủ đô của Việt Nam tên là gì?", o: ["Hồ Chí Minh", "Đà Nẵng", "Hà Nội", "Nha Trang"], a: 2 },
                 { q: "Món ăn truyền thống nổi tiếng thế giới của Việt Nam có bánh phở, nước dùng bò hoặc gà là gì?", o: ["Mì Ramen", "Pad Thai", "Phở", "Mì Ý"], a: 2 },
                 { q: "Di sản thiên nhiên thế giới nổi tiếng của Việt Nam với hơn 3.000 hòn đảo đá vôi nhô lên trên biển là gì?", o: ["Hạ Long", "Sapa", "Mũi Né", "Phú Quốc"], a: 0 }
             ],
             '대한민국': [
-                { q: "한국의 대표적인 전통 발효 식품으로 영양이 풍부하며 매콤한 맛이 특징인 것은?", o: ["치즈", "김치", "단무지", "피클"], a: 1 },
+                { q: "한국의 대표적인 전통 발효 식품으로 영양이 Phu 부하며 매콤한 맛이 특징인 것은?", o: ["치즈", "김치", "단무지", "피클"], a: 1 },
                 { q: "조선시대 세종대왕이 백성들을 위해 창제한 독창적이고 과학적인 글자는?", o: ["한글", "한자", "가나", "알파벳"], a: 0 },
                 { q: "대한민국의 수도이자 정치, 경제, 문화의 중심지인 대도시의 이름은?", o: ["인천", "부산", "서울", "제주"], a: 2 },
                 { q: "남산 정상에 위치하여 서울 시내 전체의 아름다운 전경을 볼 수 있는 명소는?", o: ["63빌딩", "롯데월드타워", "N서울타워", "광화문"], a: 2 },
@@ -87,15 +87,6 @@
         let currentQuestionIndex = 0;
         let score = 0;
         let extractedInfo = {};
-
-        window.onload = function() {
-            if (localStorage.getItem("mixology_played")) {
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('result-screen').style.display = 'block';
-                document.getElementById('score-text').innerText = localStorage.getItem("mixology_score") + " / 100";
-                document.getElementById('result-comment').innerText = "TV màn hình lớn đang hiển thị thứ hạng của bạn!";
-            }
-        }
 
         function selectCountry(country, btn) {
             selectedCountry = country;
@@ -110,24 +101,17 @@
             if (!name || !idStr) { alert("모든 정보를 입력해주세요!"); return; }
             if (!selectedCountry) { alert("국가를 선택해주세요!"); return; }
 
-            if (idStr.length !== 5 && idStr.length !== 6) { 
-                alert("ID phải từ 5 đến 6 chữ số!"); 
-                return; 
-            }
-            
             let grade, classNum, studentNum;
             if (idStr.length === 5) {
                 grade = parseInt(idStr.substring(0, 1));
                 classNum = parseInt(idStr.substring(1, 3));
                 studentNum = parseInt(idStr.substring(3, 5));
-            } else {
+            } else if (idStr.length === 6) {
                 grade = parseInt(idStr.substring(0, 2));
                 classNum = parseInt(idStr.substring(2, 4));
                 studentNum = parseInt(idStr.substring(4, 6));
-            }
-
-            if (grade < 6 || grade > 12 || classNum < 1 || classNum > 20 || studentNum < 1 || studentNum > 45) {
-                alert("학번 형식을 확인해주세요!");
+            } else {
+                alert("ID phải đúng 5 hoặc 6 chữ số!");
                 return;
             }
 
@@ -159,28 +143,19 @@
             document.getElementById('quiz-screen').style.display = 'none';
             document.getElementById('result-screen').style.display = 'block';
             document.getElementById('score-text').innerText = score + " / 100";
-            
-            localStorage.setItem("mixology_played", "true");
-            localStorage.setItem("mixology_score", score);
 
             const payload = { id: extractedInfo.id, name: extractedInfo.name, class: extractedInfo.displayClass, score: score, time: Date.now() };
             
-            // Sử dụng kho lưu trữ công khai trung gian không cần phân quyền bảo mật
-            fetch(`https://api.jsonbin.io/v3/b/663806e2ad19ca34f8646b9a`, {
-                method: 'GET',
-                headers: { 'X-Master-Key': '$2a$10$Wp6p7gXQ6e2gS9Sbe5D6e.9AQL/s6eUv8U2iWbE7qf9zP6Z5Z5Z5Z' } // Key công khai để đọc ghi tự do
-            })
+            // Sử dụng KVDB công khai, không bị chặn CORS bởi bất kỳ điện thoại nào
+            fetch('https://kvdb.io/66wY8nE63wT7WfAsYwzE12/scores')
             .then(res => res.json())
+            .catch(() => { return {}; }) // Nếu chưa có dữ liệu thì trả về object trống
             .then(oldData => {
-                let records = oldData.record || {};
+                let records = oldData || {};
                 records[extractedInfo.id] = payload;
                 
-                fetch(`https://api.jsonbin.io/v3/b/663806e2ad19ca34f8646b9a`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Master-Key': '$2a$10$Wp6p7gXQ6e2gS9Sbe5D6e.9AQL/s6eUv8U2iWbE7qf9zP6Z5Z5Z5Z'
-                    },
+                fetch('https://kvdb.io/66wY8nE63wT7WfAsYwzE12/scores', {
+                    method: 'POST',
                     body: JSON.stringify(records)
                 });
             });
