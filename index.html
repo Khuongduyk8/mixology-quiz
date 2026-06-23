@@ -3,278 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mixology Tech Club - 퀴즈 페스티벌</title>
+    <title>Mixology Tech Club - Quiz</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f172a, #1e1b4b);
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        .container {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 30px;
-            border-radius: 16px;
-            width: 90%;
-            max-width: 450px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            text-align: center;
-        }
-
-        h1 {
-            font-size: 24px;
-            margin-bottom: 25px;
-            color: #38bdf8;
-            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        label {
-            display: block;
-            font-size: 14px;
-            margin-bottom: 8px;
-            color: #94a3b8;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #334155;
-            background: #1e293b;
-            color: #ffffff;
-            font-size: 16px;
-            box-sizing: border-box;
-            outline: none;
-            transition: 0.3s;
-        }
-
-        input:focus {
-            border-color: #38bdf8;
-            box-shadow: 0 0 8px rgba(56, 189, 248, 0.3);
-        }
-
-        .country-title {
-            font-size: 14px;
-            color: #94a3b8;
-            text-align: left;
-            margin-top: 25px;
-            margin-bottom: 10px;
-        }
-
-        .country-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 25px;
-        }
-
-        .country-btn {
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #334155;
-            background: #1e293b;
-            color: #ffffff;
-            font-size: 14px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.2s ease;
-        }
-
-        .country-btn:hover, .country-btn.active {
-            background: #38bdf8;
-            color: #0f172a;
-            border-color: #38bdf8;
-            box-shadow: 0 5px 15px rgba(56, 189, 248, 0.4);
-        }
-
-        .country-btn.full-width {
-            grid-column: span 2;
-            background: linear-gradient(90deg, #312e81, #1e1b4b);
-            border-color: #4338ca;
-        }
-
-        .country-btn.full-width:hover, .country-btn.full-width.active {
-            background: #818cf8;
-            color: #0f172a;
-        }
-
-        .start-btn {
-            width: 100%;
-            padding: 14px;
-            border-radius: 8px;
-            border: none;
-            background: linear-gradient(90deg, #0ea5e9, #2563eb);
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-            transition: 0.3s;
-        }
-
-        .start-btn:hover {
-            opacity: 0.9;
-            transform: scale(1.02);
-        }
-
-        #quiz-screen, #result-screen {
-            display: none;
-        }
-
-        .quiz-box {
-            text-align: left;
-            margin-top: 20px;
-        }
-
-        .question-text {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: #f8fafc;
-            line-height: 1.5;
-            min-height: 60px;
-        }
-
-        .answer-options {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .option-btn {
-            padding: 14px;
-            border-radius: 8px;
-            border: 1px solid #475569;
-            background: #1e293b;
-            color: white;
-            text-align: left;
-            cursor: pointer;
-            font-size: 15px;
-            transition: 0.2s;
-        }
-
-        .option-btn:hover {
-            background: #334155;
-            border-color: #38bdf8;
-        }
-
-        .progress {
-            font-size: 14px;
-            color: #94a3b8;
-            margin-bottom: 10px;
-            text-align: right;
-        }
-
-        .score-text {
-            font-size: 24px;
-            color: #38bdf8;
-            margin: 15px 0;
-            font-weight: bold;
-        }
-
-        /* Thống kê bảng xếp hạng */
-        .leaderboard {
-            margin-top: 20px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-            padding: 15px;
-            text-align: left;
-        }
-        .leaderboard-title {
-            font-size: 16px;
-            font-weight: bold;
-            color: #f43f5e;
-            margin-bottom: 10px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding-bottom: 5px;
-        }
-        .leaderboard-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 6px 0;
-            font-size: 14px;
-            border-bottom: 1px dashed rgba(255,255,255,0.05);
-        }
-        .leaderboard-item.highlight {
-            color: #38bdf8;
-            font-weight: bold;
-        }
+        body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #0f172a, #1e1b4b); color: #ffffff; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); padding: 30px; border-radius: 16px; width: 90%; max-width: 450px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); text-align: center; }
+        h1 { font-size: 24px; margin-bottom: 25px; color: #38bdf8; text-shadow: 0 0 10px rgba(56, 189, 248, 0.5); }
+        .input-group { margin-bottom: 20px; text-align: left; }
+        label { display: block; font-size: 14px; margin-bottom: 8px; color: #94a3b8; }
+        input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #1e293b; color: #ffffff; font-size: 16px; box-sizing: border-box; outline: none; }
+        input:focus { border-color: #38bdf8; box-shadow: 0 0 8px rgba(56, 189, 248, 0.3); }
+        .country-title { font-size: 14px; color: #94a3b8; text-align: left; margin-top: 25px; margin-bottom: 10px; }
+        .country-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 25px; }
+        .country-btn { padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #1e293b; color: #ffffff; font-size: 14px; cursor: pointer; font-weight: 600; }
+        .country-btn.active { background: #38bdf8; color: #0f172a; border-color: #38bdf8; }
+        .country-btn.full-width { grid-column: span 2; background: linear-gradient(90deg, #312e81, #1e1b4b); }
+        .start-btn { width: 100%; padding: 14px; border-radius: 8px; border: none; background: linear-gradient(90deg, #0ea5e9, #2563eb); color: white; font-size: 16px; font-weight: bold; cursor: pointer; }
+        #quiz-screen, #result-screen { display: none; }
+        .question-text { font-size: 18px; font-weight: 600; margin-bottom: 20px; text-align: left; line-height: 1.5; }
+        .answer-options { display: flex; flex-direction: column; gap: 12px; }
+        .option-btn { padding: 14px; border-radius: 8px; border: 1px solid #475569; background: #1e293b; color: white; text-align: left; cursor: pointer; font-size: 15px; }
+        .option-btn:hover { border-color: #38bdf8; }
+        .progress { font-size: 14px; color: #94a3b8; margin-bottom: 10px; text-align: right; }
+        .score-text { font-size: 28px; color: #38bdf8; margin: 20px 0; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div class="container" id="login-screen">
-        <h1>🍹 MIXOLOGY TECH CLUB 🍹</h1>
-        
+        <h1>🍹 MIXOLOGY QUIZ 🍹</h1>
         <div class="input-group">
-            <label for="studentName">이름 (Name):</label>
-            <input type="text" id="text-studentName" placeholder="예: 이현수">
+            <label>이름 (Name):</label>
+            <input type="text" id="studentName" placeholder="예: 이현수">
         </div>
-
         <div class="input-group">
-            <label for="studentId">학번 (Student ID):</label>
-            <input type="text" id="studentId" placeholder="예: 120216 hoặc 12345">
+            <label>학번 (5자리 ID - 예: 90216):</label>
+            <input type="number" id="studentId" placeholder="학년+반+번호 (5자리)">
         </div>
-
-        <div class="country-title">퀴즈 국가 및 언어 선택 (Select Country):</div>
+        <div class="country-title">언어 선택 (Select Country):</div>
         <div class="country-grid">
             <button class="country-btn" onclick="selectCountry('베트남', this)">🇻🇳 베트남어</button>
             <button class="country-btn" onclick="selectCountry('러시아', this)">🇷🇺 러시아어</button>
             <button class="country-btn" onclick="selectCountry('필리핀', this)">🇵🇭 영어</button>
             <button class="country-btn" onclick="selectCountry('중국', this)">🇨🇳 중국어</button>
-            <button class="country-btn full-width" onclick="selectCountry('대한민국', this)">🇰🇷 한국어 (기본)</button>
+            <button class="country-btn full-width" onclick="selectCountry('대한민국', this)">🇰🇷 한국어</button>
         </div>
-
-        <button class="start-btn" onclick="startQuiz()">퀴즈 시작하기 (Start)</button>
+        <button class="start-btn" onclick="startQuiz()">퀴즈 시작하기</button>
     </div>
 
     <div class="container" id="quiz-screen">
-        <h1 id="quiz-title">🌍 퀴즈</h1>
-        <div class="progress" id="quiz-progress">질문 1 / 5</div>
-        <div class="quiz-box">
-            <div class="question-text" id="question-text">질문 로딩중...</div>
-            <div class="answer-options" id="options-container"></div>
-        </div>
+        <h1 id="quiz-title">🌍 QUIZ</h1>
+        <div class="progress" id="quiz-progress">1 / 5</div>
+        <div class="question-text" id="question-text">Loading...</div>
+        <div class="answer-options" id="options-container"></div>
     </div>
 
     <div class="container" id="result-screen">
-        <h1 id="result-title">🎉 퀴즈 완료! 🎉</h1>
-        <div id="student-info" style="color: #94a3b8; font-size: 16px; margin-bottom: 10px; font-weight: bold;"></div>
-        <div class="score-text" id="score-text">0점 / 100점</div>
-        <p id="result-comment" style="line-height: 1.5; color: #e2e8f0; padding: 0 10px; margin-bottom: 15px;"></p>
-        
-        <div class="leaderboard" id="leaderboard-box">
-            <div class="leaderboard-title" id="lb-title">🏆 실시간 석차 (Leaderboard)</div>
-            <div id="lb-list"></div>
-        </div>
-
-        <button class="start-btn" id="restart-btn" onclick="location.reload()" style="margin-top: 25px;">다시 도전하기</button>
+        <h1>🎉 SUBMITTED! 🎉</h1>
+        <div class="score-text" id="score-text">0 / 100</div>
+        <p id="result-comment" style="color: #94a3b8; line-height: 1.5;"></p>
+        <p style="color: #f43f5e; font-weight: bold; font-size: 13px; margin-top: 20px;">⚠️ 이미 응시하셨습니다. 점수는 TV 화면을 확인해주세요!</p>
     </div>
 
     <script>
-        // Danh sách ID học sinh hợp lệ (Bạn có thể thêm bớt danh sách ID do giáo viên cấp vào đây)
-        const validStudentIDs = ["120216", "12345", "202601", "202602", "202603", "202604", "202605"];
-
-        // Danh sách "đối thủ máy" dùng để mô phỏng bảng xếp hạng lớp/ban cho ngày thứ 4
-        const mockLeaderboardData = [
-            { id: "12340", name: "김민준", score: 100 },
-            { id: "12341", name: "이서연", score: 80 },
-            { id: "12342", name: "Park", score: 60 },
-            { id: "12343", name: "Nguyen", score: 40 }
-        ];
-
+        // Khởi tạo cấu trúc dữ liệu Quiz cố định ban đầu
         const quizDatabase = {
             '베트남': [
                 { q: "Trang phục truyền thống của Việt Nam được làm bằng lụa, có tà áo dài xẻ hai bên mặc cùng với quần là gì?", o: ["Sườn xám", "Áo dài", "Hanbok", "Kimono"], a: 1 },
@@ -287,164 +78,95 @@
                 { q: "한국의 대표적인 전통 발효 식품으로 영양이 풍부하며 매콤한 맛이 특징인 것은?", o: ["치즈", "김치", "단무지", "피클"], a: 1 },
                 { q: "조선시대 세종대왕이 백성들을 위해 창제한 독창적이고 과학적인 글자는?", o: ["한글", "한자", "가나", "알파벳"], a: 0 },
                 { q: "대한민국의 수도이자 정치, 경제, 문화의 중심지인 대도시의 이름은?", o: ["인천", "부산", "서울", "제주"], a: 2 },
-                { q: "남산 정상에 위치하여 서울 시내 전체의 아름다운 전경และ 야경을 볼 수 있는 명소는?", o: ["63빌딩", "롯데월드타워", "N서울타워", "광화문"], a: 2 },
+                { q: "남산 정상에 위치하여 서울 시내 전체의 아름다운 전경을 볼 수 있는 명소는?", o: ["63빌딩", "롯데월드타워", "N서울타워", "광화门"], a: 2 },
                 { q: "음력 8월 15일로 가족들이 모여 송편을 빚고 달을 보며 소원을 비는 한국의 명절은?", o: ["설날", "추석", "단오", "동지"], a: 1 }
-            ],
-            '러시아': [
-                { q: "Как называется традиционная русская деревянная игрушка, внутри которой находятся другие куклы меньшего размера?", o: ["Матрёшка", "Барби", "Пиноккио", "Тедди"], a: 0 },
-                { q: "Как называется знаменитая площадь в центре Москвы, окруженная Кремлем и собором Василия Блаженного?", o: ["Таймс-сквер", "Трафальгарская площадь", "Красная площадь", "Тяньаньмэнь"], a: 2 },
-                { q: "Какая столица у России — самой большой страны в мире по площади?", o: ["Санкт-Петербург", "Москва", "Владивосток", "Сибирь"], a: 1 },
-                { q: "Какое озеро в Сибири является самым глубоким и самым старым чистым пресноводным озером в мире?", o: ["Байкал", "Виктория", "Мичиган", "Черное море"], a: 0 },
-                { q: "Как называется крепкий прозрачный традиционный алкогольный напиток, созданный, чтобы стойко переносить суровые русские морозы?", o: ["Вино", "Водка", "Виски", "Ром"], a: 1 }
-            ],
-            '필리핀': [
-                { q: "Which Philippine island is loved by tourists worldwide for its white sand beach and emerald waters?", o: ["Boracay", "Cebu", "Manila", "Bohol"], a: 0 },
-                { q: "What is the iconic public transportation in the Philippines, made by colorfully modifying leftover US military jeeps?", o: ["Tricycle", "Tuktuk", "Jeepney", "Grab"], a: 2 },
-                { q: "What is the capital city of the Philippines, a country made up of more than 7,000 islands?", o: ["Davao", "Cebu", "Manila", "Clark"], a: 2 },
-                { q: "What is the traditional Filipino shaved ice dessert topped with fruits, jelly, ice cream, and condensed milk?", o: ["Halo-Halo", "Mango Smoothie", "Bingsu", "Tapioca"], a: 0 },
-                { q: "What does the yellow symbol on the Philippine flag represent?", o: ["The Moon", "The Sun and its 8 rays", "A Lion", "An Eagle"], a: 1 }
-            ],
-            '중국': [
-                { q: "为了防御北方边境而建造的长达数千公里的中国宏伟城墙是什么？", o: ["故宫", "万里长城", "兵马俑", "颐和园"], a: 1 },
-                { q: "拥有悠久历史和丰富文化遗产的中国首都市哪座城市？", o: ["上海", "香港", "广州", "北京"], a: 3 },
-                { q: "象征中国的国宝级动物，喜欢吃竹子、性格温顺可爱的熊是什么？", o: ["小熊猫", "大熊猫", "考拉", "北极熊"], a: 1 },
-                { q: "裙摆带有高开叉、能完美展现身段的中国高雅传统女性服装是什么？", o: ["韩服", "和服", "旗袍", "奥黛"], a: 2 },
-                { q: "在中国，冲泡茶水和饮茶时所具备的礼仪与传统艺术文化称为什么？", o: ["茶道", "书法", "剑道", "插花"], a: 0 }
             ]
-        };
-
-        const localization = {
-            '베트남': { title: "🌍 CẢM ƠN BẠN đã tham gia!", score: "Điểm của bạn: ", lbTitle: "🏆 BẢNG XẾP HẠNG THEO LỚP", restart: "Thử lại (Restart)", p100: "Chúc mừng! Bạn đạt điểm tuyệt đối! 💯 Hãy đến booth của Mixology nhận nước nhé! 🍹✨", p60: "Bạn đã vượt qua bài test! 👏 Hãy ghé qua quầy Mixology nhận quà kỷ niệm nào! 👍", p0: "Tiếc quá, chưa đạt điểm sàn rồi. 😢 Thử lại để rinh quà nhé! 🚀" },
-            '대한민국': { title: "🎉 퀴즈 완료! 🎉", score: "당신의 점수: ", lbTitle: "🏆 반별/전공별 실시간 석차", restart: "다시 도전하기 (Restart)", p100: "축하합니다! 만점입니다! 💯 Mixology 부스에 와서 특별 음료 선물을 받아 가세요! 🍹✨", p60: "합격입니다! 👏 Mixology 부스에서 시원한 참가 보상을 획득하세요! 👍", p0: "아쉽게도 커트라인을 넘지 못했습니다. 😢 다시 한번 도전해보세요! 🚀" },
-            '러시아': { title: "🎉 Викторина окончена! 🎉", score: "Ваш результат: ", lbTitle: "🏆 РЕЙТИНГОВАЯ ТАБЛИЦА КЛАССА", restart: "Попробовать снова", p100: "Идеальный результат! 💯 Приходите к стенду Mixology за напитком! 🍹✨", p60: "Вы успешно прошли тест! 👏 Загляните на стенд Mixology за сувениром! 👍", p0: "К сожалению, балл низкий. 😢 Попробуем снова? 🚀" },
-            '필리핀': { title: "🎉 Quiz Completed! 🎉", score: "Your Score: ", lbTitle: "🏆 CLASS LEADERBOARD", restart: "Try Again", p100: "Perfect score! 💯 Come to the Mixology booth to claim your special complimentary drink! 🍹✨", p60: "You passed! 👏 Drop by the Mixology booth to claim your reward! 👍", p0: "Aww, you didn't pass. 😢 Click below to try again! 🚀" },
-            '중국': { title: "🎉 问答完成！ 🎉", score: "您的得分：", lbTitle: "🏆 班级/专业实时 leaderboard", restart: "再次挑战", p100: "满分！💯 快来 Mixology 展位领取您的专属特色饮品吧！🍹✨", p60: "通过测试！👏 欢迎顺道前往 Mixology 展位领取您的参与奖励！👍", p0: "太可惜了，没能及格。😢 再次挑战赢取奖品吧！🚀" }
         };
 
         let selectedCountry = "";
         let currentQuestions = [];
         let currentQuestionIndex = 0;
         let score = 0;
+        let extractedInfo = {};
 
-        function selectCountry(country, buttonElement) {
+        // Tự động chặn nếu điện thoại này đã làm bài rồi
+        window.onload = function() {
+            if (localStorage.getItem("mixology_played")) {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('result-screen').style.display = 'block';
+                document.getElementById('score-text').innerText = localStorage.getItem("mixology_score") + " / 100";
+                document.getElementById('result-comment').innerText = "TV màn hình lớn đang hiển thị thứ hạng của bạn!";
+            }
+        }
+
+        function selectCountry(country, btn) {
             selectedCountry = country;
-            document.querySelectorAll('.country-btn').forEach(btn => btn.classList.remove('active'));
-            buttonElement.classList.add('active');
+            document.querySelectorAll('.country-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
         }
 
         function startQuiz() {
-            const name = document.getElementById('text-studentName').value.trim();
-            const id = document.getElementById('studentId').value.trim();
+            const name = document.getElementById('studentName').value.trim();
+            const idStr = document.getElementById('studentId').value.trim();
 
-            if (!name || !id) {
-                alert("이름과 학번을 모두 입력해주세요! (Please enter your Name and Student ID!)");
+            if (!name || !idStr) { alert("모든 정보를 입력해주세요!"); return; }
+            if (!selectedCountry) { alert("국가를 선택해주세요!"); return; }
+
+            // THUẬT TOÁN KIỂM TRA & BÓC TÁCH ID HỢP LỆ (Đúng chuẩn Khối - Lớp - Số thứ tự)
+            if (idStr.length !== 5) { alert("학번은 반드시 5자리여야 합니다! (ID phải đúng 5 chữ số)"); return; }
+            
+            const grade = parseInt(idStr.substring(0, 1)); // Số đầu: Khối
+            const classNum = parseInt(idStr.substring(1, 3)); // 2 số giữa: Lớp
+            const studentNum = parseInt(idStr.substring(3, 5)); // 2 số cuối: Số thứ tự
+
+            // Điều kiện chặn ID ảo (Ví dụ: Trường chỉ có từ khối 1->9, tối đa 20 lớp, tối đa 40 học sinh/lớp)
+            if (grade < 1 || grade > 9 || classNum < 1 || classNum > 20 || studentNum < 1 || studentNum > 40) {
+                alert("존재하지 않는 학번 형식입니다! 올바른 학번을 입력해주세요.");
                 return;
             }
 
-            // XÁC THỰC MÃ ID HỌC SINH
-            if (!validStudentIDs.includes(id)) {
-                alert("등록되지 않은 학번입니다! 올바른 학번을 입력해주세요. (ID không hợp lệ hoặc không có trong danh sách!)");
-                return;
-            }
-
-            if (!selectedCountry) {
-                alert("퀴즈를 진행할 국가를 선택해주세요! (Please select a country!)");
-                return;
-            }
-
-            currentQuestions = [...quizDatabase[selectedCountry]].sort(() => Math.random() - 0.5);
-            currentQuestionIndex = 0;
-            score = 0;
-
+            extractedInfo = { id: idStr, name: name, displayClass: `${grade}학년 ${classNum}반` };
+            currentQuestions = [...(quizDatabase[selectedCountry] || quizDatabase['대한민국'])].sort(() => Math.random() - 0.5);
+            
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('quiz-screen').style.display = 'block';
-            
-            const titles = { '베트남': '🇻🇳 VIỆT NAM QUIZ', '대한민국': '🇰🇷 대한민국 퀴즈', '러시아': '🇷🇺 РОССИЯ ВИКТОРИНА', '필리핀': '🇵🇭 PHILIPPINES QUIZ', '중국': '🇨🇳 中国 问答竞赛' };
-            document.getElementById('quiz-title').innerText = titles[selectedCountry];
             loadQuestion();
         }
 
         function loadQuestion() {
-            if (currentQuestionIndex >= currentQuestions.length) {
-                showResult();
-                return;
-            }
-
-            const progressText = { '베트남': 'Câu hỏi', '대한민국': '질문', '러시아': 'Вопрос', '필리핀': 'Question', '중국': '问题' };
-            document.getElementById('quiz-progress').innerText = `${progressText[selectedCountry]} ${currentQuestionIndex + 1} / ${currentQuestions.length}`;
-            
+            if (currentQuestionIndex >= currentQuestions.length) { submitData(); return; }
+            document.getElementById('quiz-progress').innerText = `${currentQuestionIndex + 1} / ${currentQuestions.length}`;
             const currentQ = currentQuestions[currentQuestionIndex];
             document.getElementById('question-text').innerText = currentQ.q;
-
-            const optionsContainer = document.getElementById('options-container');
-            optionsContainer.innerHTML = "";
-
-            currentQ.o.forEach((option, index) => {
+            const container = document.getElementById('options-container');
+            container.innerHTML = "";
+            currentQ.o.forEach((opt, idx) => {
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
-                btn.innerText = `${index + 1}. ${option}`;
-                btn.onclick = () => checkAnswer(index);
-                optionsContainer.appendChild(btn);
+                btn.innerText = `${idx + 1}. ${opt}`;
+                btn.onclick = () => { if(idx === currentQ.a) score += 20; currentQuestionIndex++; loadQuestion(); };
+                container.appendChild(btn);
             });
         }
 
-        function checkAnswer(selectedIndex) {
-            const currentQ = currentQuestions[currentQuestionIndex];
-            if (selectedIndex === currentQ.a) {
-                score += 20; 
-            }
-            currentQuestionIndex++;
-            loadQuestion();
-        }
-
-        function showResult() {
+        function submitData() {
             document.getElementById('quiz-screen').style.display = 'none';
             document.getElementById('result-screen').style.display = 'block';
-
-            const name = document.getElementById('text-studentName').value.trim();
-            const id = document.getElementById('studentId').value.trim();
-            const lang = localization[selectedCountry];
-
-            document.getElementById('result-title').innerText = lang.title;
-            document.getElementById('student-info').innerText = `${id} - ${name}`;
-            document.getElementById('score-text').innerText = `${lang.score} ${score} / 100`;
-
-            let comment = "";
-            if (score === 100) comment = lang.p100;
-            else if (score >= 60) comment = lang.p60;
-            else comment = lang.p0;
+            document.getElementById('score-text').innerText = score + " / 100";
             
-            document.getElementById('result-comment').innerText = comment;
-            document.getElementById('restart-btn').innerText = lang.restart;
+            // Khóa thiết bị không cho làm lại
+            localStorage.setItem("mixology_played", "true");
+            localStorage.setItem("mixology_score", score);
 
-            // XỬ LÝ BẢNG XẾP HẠNG THEO LỚP DỰA TRÊN ID
-            document.getElementById('lb-title').innerText = lang.lbTitle;
+            // Gửi dữ liệu trực tiếp lên bộ nhớ đám mây của CLB (Sẽ liên kết trực tiếp với TV ở bước sau)
+            const payload = { id: extractedInfo.id, name: extractedInfo.name, class: extractedInfo.displayClass, score: score, time: Date.now() };
             
-            // Đẩy dữ liệu người chơi hiện tại vào bảng xếp hạng tạm thời
-            let currentLeaderboard = [...mockLeaderboardData, { id: id, name: name, score: score }];
-            // Sắp xếp điểm số từ cao xuống thấp
-            currentLeaderboard.sort((a, b) => b.score - a.score);
-
-            const lbListContainer = document.getElementById('lb-list');
-            lbListContainer.innerHTML = "";
-
-            currentLeaderboard.forEach((user, index) => {
-                const item = document.createElement('div');
-                // Nếu là chính người chơi thì làm nổi bật màu xanh dương
-                if (user.id === id) {
-                    item.className = "leaderboard-item highlight";
-                } else {
-                    item.className = "leaderboard-item";
-                }
-                
-                // Trích xuất lớp tự động từ ID (ví dụ lấy 2 số đầu tiên của ID làm tên lớp)
-                let classPrefix = user.id.substring(0, 2) + "반/班";
-                
-                item.innerHTML = `<span>${index + 1}위. [${classPrefix}] ${user.name}</span> <span>${user.score}점</span>`;
-                lbListContainer.appendChild(item);
+            // Tạm thời lưu vào hệ thống chung trực tuyến công khai
+            fetch(`https://mixology-tech-default-rtdb.firebaseio.com/scores/${extractedInfo.id}.json`, {
+                method: 'PUT',
+                body: JSON.stringify(payload)
             });
         }
     </script>
-
 </body>
 </html>
