@@ -9,7 +9,7 @@
         h1 { font-size: 42px; color: #f43f5e; text-shadow: 0 0 20px rgba(244, 63, 94, 0.6); margin-bottom: 5px; letter-spacing: 2px; }
         .subtitle { font-size: 18px; color: #38bdf8; margin-bottom: 40px; font-weight: bold; }
         .board { width: 100%; max-width: 800px; background: rgba(30, 41, 59, 0.5); border: 2px solid #334155; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); overflow: hidden; padding: 10px; }
-        .row { display: flex; justify-content: space-between; align-items: center; padding: 18px 25px; margin: 8px; border-radius: 12px; background: #1e293b; font-size: 20px; font-weight: 600; transition: all 0.5s ease; }
+        .row { display: flex; justify-content: space-between; align-items: center; padding: 18px 25px; margin: 8px; border-radius: 12px; background: #1e293b; font-size: 20px; font-weight: 600; }
         .row.top1 { background: linear-gradient(90deg, #b45309, #f59e0b); color: #0f172a; transform: scale(1.02); box-shadow: 0 0 20px rgba(245, 158, 11, 0.4); }
         .row.top2 { background: linear-gradient(90deg, #475569, #94a3b8); color: #0f172a; }
         .row.top3 { background: linear-gradient(90deg, #7c2d12, #ea580c); }
@@ -27,25 +27,30 @@
     <div class="subtitle">MIXOLOGY TECH CLUB FESTIVAL</div>
 
     <div class="board" id="board-container">
-        <div style="text-align: center; padding: 40px; color: #64748b;">대기 중... 실시간으로 점수가 업데이트됩니다.</div>
+        <div style="text-align: center; padding: 40px; color: #64748b;">대기 중... (Đang đợi lượt thi đấu đầu tiên)</div>
     </div>
 
     <script>
-        // Hàm liên tục cập nhật dữ liệu tự động từ Cloud về TV công khai
         function listenToScores() {
             setInterval(() => {
                 fetch('https://mixology-tech-default-rtdb.firebaseio.com/scores.json')
                 .then(res => res.json())
                 .then(data => {
                     if (!data) return;
-                    // Chuyển Object thành Array để sắp xếp
-                    let scoreArray = Object.keys(data).map(key => data[key]);
-                    // Sắp xếp: Điểm cao xếp trước, nếu bằng điểm thì ai nộp trước (thời gian nhỏ hơn) xếp trước
-                    scoreArray.sort((a, b) => b.score - a.score || a.time - b.time);
                     
-                    renderLeaderboard(scoreArray.slice(0, 10)); // Chỉ lấy Top 10 người xuất sắc nhất
-                });
-            }, 2000); // Tự động làm mới dữ liệu mỗi 2 giây siêu tốc
+                    // Lọc bỏ các phần dữ liệu lỗi hoặc trống rỗng dữ liệu
+                    let scoreArray = Object.keys(data)
+                        .map(key => data[key])
+                        .filter(user => user && user.name && user.id && user.score !== undefined);
+
+                    if (scoreArray.length === 0) return;
+
+                    // Sắp xếp điểm số
+                    scoreArray.sort((a, b) => b.score - a.score || a.time - b.time);
+                    renderLeaderboard(scoreArray.slice(0, 10));
+                })
+                .catch(err => console.log("Đang quét dữ liệu..."));
+            }, 2000);
         }
 
         function renderLeaderboard(topList) {
@@ -60,10 +65,14 @@
                 else if (index === 2) rankClass = "top3";
 
                 row.className = `row ${rankClass}`;
+                
+                // Đảm bảo thông tin lớp luôn có chữ để hiển thị đẹp mắt
+                let userClass = user.class ? user.class : "일반";
+
                 row.innerHTML = `
                     <div class="rank">#${index + 1}</div>
                     <div class="info">
-                        <span class="class-tag">${user.class}</span>
+                        <span class="class-tag">${userClass}</span>
                         <span>${user.name} (${user.id})</span>
                     </div>
                     <div class="score">${user.score}점</div>
