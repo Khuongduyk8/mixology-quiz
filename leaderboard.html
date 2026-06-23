@@ -6,18 +6,18 @@
     <title>Mixology Tech Club - LIVE LEADERBOARD</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #020617; color: #ffffff; margin: 0; padding: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; box-sizing: border-box; }
-        h1 { font-size: 42px; color: #f43f5e; text-shadow: 0 0 20px rgba(244, 63, 94, 0.6); margin-bottom: 5px; letter-spacing: 2px; }
-        .subtitle { font-size: 18px; color: #38bdf8; margin-bottom: 40px; font-weight: bold; }
-        .board { width: 100%; max-width: 800px; background: rgba(30, 41, 59, 0.5); border: 2px solid #334155; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); overflow: hidden; padding: 10px; }
-        .row { display: flex; justify-content: space-between; align-items: center; padding: 18px 25px; margin: 8px; border-radius: 12px; background: #1e293b; font-size: 20px; font-weight: 600; }
-        .row.top1 { background: linear-gradient(90deg, #b45309, #f59e0b); color: #0f172a; transform: scale(1.02); box-shadow: 0 0 20px rgba(245, 158, 11, 0.4); }
+        h1 { font-size: 42px; color: #f43f5e; text-shadow: 0 0 20px rgba(244, 63, 94, 0.6); margin-bottom: 5px; letter-spacing: 2px; font-weight: 800; }
+        .subtitle { font-size: 18px; color: #38bdf8; margin-bottom: 40px; font-weight: bold; letter-spacing: 1px; }
+        .board { width: 100%; max-width: 850px; background: rgba(30, 41, 59, 0.4); border: 2px solid #334155; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); overflow: hidden; padding: 15px; backdrop-filter: blur(10px); }
+        .row { display: flex; justify-content: space-between; align-items: center; padding: 18px 25px; margin: 8px 0; border-radius: 12px; background: #1e293b; font-size: 22px; font-weight: 600; transition: all 0.3s ease; }
+        .row.top1 { background: linear-gradient(90deg, #b45309, #f59e0b); color: #0f172a; transform: scale(1.01); box-shadow: 0 0 25px rgba(245, 158, 11, 0.4); }
         .row.top2 { background: linear-gradient(90deg, #475569, #94a3b8); color: #0f172a; }
-        .row.top3 { background: linear-gradient(90deg, #7c2d12, #ea580c); }
-        .rank { width: 60px; font-size: 24px; font-weight: 800; }
-        .info { flex-grow: 1; display: flex; gap: 20px; }
-        .class-tag { color: #38bdf8; font-size: 16px; background: rgba(56, 189, 248, 0.1); padding: 3px 10px; border-radius: 6px; }
-        .row.top1 .class-tag, .row.top2 .class-tag { color: #0f172a; background: rgba(0,0,0,0.1); }
-        .score { font-size: 24px; font-weight: 800; color: #38bdf8; }
+        .row.top3 { background: linear-gradient(90deg, #7c2d12, #ea580c); color: #ffffff; }
+        .rank { width: 65px; font-size: 26px; font-weight: 900; }
+        .info { flex-grow: 1; display: flex; align-items: center; gap: 20px; }
+        .class-tag { color: #38bdf8; font-size: 16px; background: rgba(56, 189, 248, 0.15); padding: 4px 12px; border-radius: 6px; font-weight: 700; border: 1px solid rgba(56, 189, 248, 0.3); }
+        .row.top1 .class-tag, .row.top2 .class-tag { color: #0f172a; background: rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.15); }
+        .score { font-size: 26px; font-weight: 800; color: #34d399; }
         .row.top1 .score, .row.top2 .score { color: #0f172a; }
     </style>
 </head>
@@ -27,29 +27,38 @@
     <div class="subtitle">MIXOLOGY TECH CLUB FESTIVAL</div>
 
     <div class="board" id="board-container">
-        <div style="text-align: center; padding: 40px; color: #64748b;">대기 중... (Đang đợi lượt thi đấu đầu tiên)</div>
+        <div style="text-align: center; padding: 50px; color: #64748b; font-size: 18px; font-weight: 600;">
+            ⏳ Đang kết nối dữ liệu và đợi lượt thi đấu đầu tiên...
+        </div>
     </div>
 
     <script>
         function listenToScores() {
+            // Tự động quét và cập nhật mỗi 2 giây một lần
             setInterval(() => {
                 fetch('https://mixology-tech-default-rtdb.firebaseio.com/scores.json')
                 .then(res => res.json())
                 .then(data => {
-                    if (!data) return;
+                    if (!data) {
+                        document.getElementById('board-container').innerHTML = 
+                            `<div style="text-align: center; padding: 50px; color: #64748b; font-size: 18px; font-weight: 600;">⏳ Chưa có dữ liệu thí sinh nộp bài.</div>`;
+                        return;
+                    }
                     
-                    // Lọc bỏ các phần dữ liệu lỗi hoặc trống rỗng dữ liệu
+                    // Chuyển đổi Object Firebase thành Array và lọc bỏ các phần tử rác/lỗi
                     let scoreArray = Object.keys(data)
                         .map(key => data[key])
-                        .filter(user => user && user.name && user.id && user.score !== undefined);
+                        .filter(user => user && user.name && user.id);
 
                     if (scoreArray.length === 0) return;
 
-                    // Sắp xếp điểm số
+                    // Sắp xếp theo điểm cao nhất, nếu bằng điểm thì ai nộp trước (time nhỏ hơn) đứng trước
                     scoreArray.sort((a, b) => b.score - a.score || a.time - b.time);
+                    
+                    // Chỉ lấy Top 10 học sinh xuất sắc nhất để hiển thị
                     renderLeaderboard(scoreArray.slice(0, 10));
                 })
-                .catch(err => console.log("Đang quét dữ liệu..."));
+                .catch(err => console.log("Đang tải dữ liệu mạng..."));
             }, 2000);
         }
 
@@ -66,13 +75,24 @@
 
                 row.className = `row ${rankClass}`;
                 
-                // Đảm bảo thông tin lớp luôn có chữ để hiển thị đẹp mắt
-                let userClass = user.class ? user.class : "일반";
+                // Thuật toán tự động sửa lỗi hiển thị lớp nếu biến dữ liệu từ máy học sinh gửi lên bị lệch cấu trúc
+                let displayClass = "일반";
+                if (user.class) {
+                    displayClass = user.class;
+                } else if (user.id) {
+                    // Tự động bóc tách ngược lại từ ID nếu trường class bị rỗng
+                    let idStr = user.id.toString();
+                    if (idStr.length === 5) {
+                        displayClass = idStr.substring(0, 1) + "학년 " + parseInt(idStr.substring(1, 3)) + "반";
+                    } else if (idStr.length === 6) {
+                        displayClass = idStr.substring(0, 2) + "학년 " + parseInt(idStr.substring(2, 4)) + "반";
+                    }
+                }
 
                 row.innerHTML = `
                     <div class="rank">#${index + 1}</div>
                     <div class="info">
-                        <span class="class-tag">${userClass}</span>
+                        <span class="class-tag">${displayClass}</span>
                         <span>${user.name} (${user.id})</span>
                     </div>
                     <div class="score">${user.score}점</div>
@@ -81,6 +101,7 @@
             });
         }
 
+        // Kích hoạt hàm lắng nghe dữ liệu trực tuyến
         listenToScores();
     </script>
 </body>
