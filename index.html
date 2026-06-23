@@ -180,15 +180,41 @@
         .score-text {
             font-size: 24px;
             color: #38bdf8;
-            margin: 20px 0;
+            margin: 15px 0;
             font-weight: bold;
-            text-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+        }
+
+        /* Thống kê bảng xếp hạng */
+        .leaderboard {
+            margin-top: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: left;
+        }
+        .leaderboard-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #f43f5e;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 5px;
+        }
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 14px;
+            border-bottom: 1px dashed rgba(255,255,255,0.05);
+        }
+        .leaderboard-item.highlight {
+            color: #38bdf8;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
-    <!-- 1. 로그인 화면 (Giao diện chung tiếng Hàn) -->
     <div class="container" id="login-screen">
         <h1>🍹 MIXOLOGY TECH CLUB 🍹</h1>
         
@@ -199,10 +225,10 @@
 
         <div class="input-group">
             <label for="studentId">학번 (Student ID):</label>
-            <input type="text" id="studentId" placeholder="예: 120216">
+            <input type="text" id="studentId" placeholder="예: 120216 hoặc 12345">
         </div>
 
-        <div class="country-title">퀴즈 국가 및 언어 선택 (Select Country & Language):</div>
+        <div class="country-title">퀴즈 국가 및 언어 선택 (Select Country):</div>
         <div class="country-grid">
             <button class="country-btn" onclick="selectCountry('베트남', this)">🇻🇳 베트남어</button>
             <button class="country-btn" onclick="selectCountry('러시아', this)">🇷🇺 러시아어</button>
@@ -214,7 +240,6 @@
         <button class="start-btn" onclick="startQuiz()">퀴즈 시작하기 (Start)</button>
     </div>
 
-    <!-- 2. 퀴즈 진행 화면 (Đổi tiêu đề động theo nước) -->
     <div class="container" id="quiz-screen">
         <h1 id="quiz-title">🌍 퀴즈</h1>
         <div class="progress" id="quiz-progress">질문 1 / 5</div>
@@ -224,17 +249,32 @@
         </div>
     </div>
 
-    <!-- 3. 결과 화면 (Dịch linh hoạt theo nước chọn) -->
     <div class="container" id="result-screen">
         <h1 id="result-title">🎉 퀴즈 완료! 🎉</h1>
         <div id="student-info" style="color: #94a3b8; font-size: 16px; margin-bottom: 10px; font-weight: bold;"></div>
         <div class="score-text" id="score-text">0점 / 100점</div>
-        <p id="result-comment" style="line-height: 1.5; color: #e2e8f0; padding: 0 10px;"></p>
+        <p id="result-comment" style="line-height: 1.5; color: #e2e8f0; padding: 0 10px; margin-bottom: 15px;"></p>
+        
+        <div class="leaderboard" id="leaderboard-box">
+            <div class="leaderboard-title" id="lb-title">🏆 실시간 석차 (Leaderboard)</div>
+            <div id="lb-list"></div>
+        </div>
+
         <button class="start-btn" id="restart-btn" onclick="location.reload()" style="margin-top: 25px;">다시 도전하기</button>
     </div>
 
     <script>
-        // KHO DỮ LIỆU ĐA NGÔN NGỮ CHUẨN XỊN
+        // Danh sách ID học sinh hợp lệ (Bạn có thể thêm bớt danh sách ID do giáo viên cấp vào đây)
+        const validStudentIDs = ["120216", "12345", "202601", "202602", "202603", "202604", "202605"];
+
+        // Danh sách "đối thủ máy" dùng để mô phỏng bảng xếp hạng lớp/ban cho ngày thứ 4
+        const mockLeaderboardData = [
+            { id: "12340", name: "김민준", score: 100 },
+            { id: "12341", name: "이서연", score: 80 },
+            { id: "12342", name: "Park", score: 60 },
+            { id: "12343", name: "Nguyen", score: 40 }
+        ];
+
         const quizDatabase = {
             '베트남': [
                 { q: "Trang phục truyền thống của Việt Nam được làm bằng lụa, có tà áo dài xẻ hai bên mặc cùng với quần là gì?", o: ["Sườn xám", "Áo dài", "Hanbok", "Kimono"], a: 1 },
@@ -247,11 +287,11 @@
                 { q: "한국의 대표적인 전통 발효 식품으로 영양이 풍부하며 매콤한 맛이 특징인 것은?", o: ["치즈", "김치", "단무지", "피클"], a: 1 },
                 { q: "조선시대 세종대왕이 백성들을 위해 창제한 독창적이고 과학적인 글자는?", o: ["한글", "한자", "가나", "알파벳"], a: 0 },
                 { q: "대한민국의 수도이자 정치, 경제, 문화의 중심지인 대도시의 이름은?", o: ["인천", "부산", "서울", "제주"], a: 2 },
-                { q: "남산 정상에 위치하여 서울 시내 전체의 아름다운 전경과 야경을 볼 수 있는 명소는?", o: ["63빌딩", "롯데월드타워", "N서울타워", "광화문"], a: 2 },
+                { q: "남산 정상에 위치하여 서울 시내 전체의 아름다운 전경และ 야경을 볼 수 있는 명소는?", o: ["63빌딩", "롯데월드타워", "N서울타워", "광화문"], a: 2 },
                 { q: "음력 8월 15일로 가족들이 모여 송편을 빚고 달을 보며 소원을 비는 한국의 명절은?", o: ["설날", "추석", "단오", "동지"], a: 1 }
             ],
             '러시아': [
-                { q: "Как называется традиционная русская деревянная игрушка, внутри которой находятся другие куклы меньшего размера?", o: ["Матрёшка", "Барби", "Пиноккио", "Тед디"], a: 0 },
+                { q: "Как называется традиционная русская деревянная игрушка, внутри которой находятся другие куклы меньшего размера?", o: ["Матрёшка", "Барби", "Пиноккио", "Тедди"], a: 0 },
                 { q: "Как называется знаменитая площадь в центре Москвы, окруженная Кремлем и собором Василия Блаженного?", o: ["Таймс-сквер", "Трафальгарская площадь", "Красная площадь", "Тяньаньмэнь"], a: 2 },
                 { q: "Какая столица у России — самой большой страны в мире по площади?", o: ["Санкт-Петербург", "Москва", "Владивосток", "Сибирь"], a: 1 },
                 { q: "Какое озеро в Сибири является самым глубоким и самым старым чистым пресноводным озером в мире?", o: ["Байкал", "Виктория", "Мичиган", "Черное море"], a: 0 },
@@ -273,13 +313,12 @@
             ]
         };
 
-        // Giao diện kết quả dịch theo nước
         const localization = {
-            '베트남': { title: "🌍 CẢM ƠN BẠN đã tham gia!", score: "Điểm của bạn: ", restart: "Thử lại (Restart)", p100: "Chúc mừng! Bạn đạt điểm tuyệt đối! 💯 Bạn đúng là bậc thầy văn hóa. Hãy đến booth của Mixology nhận ngay một phần nước đặc biệt nhé! 🍹✨", p60: "Bạn đã vượt qua bài test thành công! 👏 Rất tuyệt vời. Hãy ghé qua quầy Mixology nhận phần quà kỷ niệm nào! 👍", p0: "Tiếc quá, bạn chưa đạt điểm sàn rồi. 😢 Đừng nản chí, bấm nút dưới để thử lại và rinh quà nhé! 🚀" },
-            '대한민국': { title: "🎉 퀴즈 완료! 🎉", score: "당신의 점수: ", restart: "다시 도전하기 (Restart)", p100: "축하합니다! 만점입니다! 💯 해당 국가의 문화 마스터이시군요! Mixology 부스에 와서 달콤한 특별 음료 선물을 받아 가세요! 🍹✨", p60: "합격입니다! 짝짝짝! 👏 퀴즈를 아주 잘 풀어주셨어요. Mixology 부스에서 시원한 참가 보상을 획득하세요! 👍", p0: "아쉽게도 커트라인을 넘지 못했습니다. 😢 하지만 기회는 또 있습니다! 다시 도전해서 만점에 도전해볼까요? 🚀" },
-            '러시아': { title: "🎉 Викторина окончена! 🎉", score: "Ваш результат: ", restart: "Попробовать снова", p100: "Поздравляем! Идеальный результат! 💯 Вы настоящий эксперт культуры! Приходите к стенду Mixology и получите свой особенный вкусный напиток! 🍹✨", p60: "Вы успешно прошли тест! 👏 Отличная работа. Загляните на стенд Mixology, чтобы получить свой сувенир! 👍", p0: "К сожалению, вы не набрали проходной балл. 😢 Но у вас есть еще один шанс! Попробуем снова? 🚀" },
-            '필리핀': { title: "🎉 Quiz Completed! 🎉", score: "Your Score: ", restart: "Try Again", p100: "Congratulations! Perfect score! 💯 You are a true cultural master! Come to the Mixology booth to claim your special complimentary drink! 🍹✨", p60: "You passed the test! Awesome job. 👏 Drop by the Mixology booth to claim your reward! 👍", p0: "Aww, you didn't pass the line. 😢 But don't worry! Click below to try again and grab your prize! 🚀" },
-            '중국': { title: "🎉 问答完成！ 🎉", score: "您的得分：", restart: "再次挑战", p100: "恭喜您！满分！💯 您真是当之无愧的文化达人！快来 Mixology 展位领取您的专属特色饮品吧！🍹✨", p60: "通过测试！太棒了。👏 欢迎顺道前往 Mixology 展位领取您的参与奖励！👍", p0: "太可惜了，没能达到及格线。😢 不过别气馁！点击下方按钮再次挑战，赢取奖品吧！🚀" }
+            '베트남': { title: "🌍 CẢM ƠN BẠN đã tham gia!", score: "Điểm của bạn: ", lbTitle: "🏆 BẢNG XẾP HẠNG THEO LỚP", restart: "Thử lại (Restart)", p100: "Chúc mừng! Bạn đạt điểm tuyệt đối! 💯 Hãy đến booth của Mixology nhận nước nhé! 🍹✨", p60: "Bạn đã vượt qua bài test! 👏 Hãy ghé qua quầy Mixology nhận quà kỷ niệm nào! 👍", p0: "Tiếc quá, chưa đạt điểm sàn rồi. 😢 Thử lại để rinh quà nhé! 🚀" },
+            '대한민국': { title: "🎉 퀴즈 완료! 🎉", score: "당신의 점수: ", lbTitle: "🏆 반별/전공별 실시간 석차", restart: "다시 도전하기 (Restart)", p100: "축하합니다! 만점입니다! 💯 Mixology 부스에 와서 특별 음료 선물을 받아 가세요! 🍹✨", p60: "합격입니다! 👏 Mixology 부스에서 시원한 참가 보상을 획득하세요! 👍", p0: "아쉽게도 커트라인을 넘지 못했습니다. 😢 다시 한번 도전해보세요! 🚀" },
+            '러시아': { title: "🎉 Викторина окончена! 🎉", score: "Ваш результат: ", lbTitle: "🏆 РЕЙТИНГОВАЯ ТАБЛИЦА КЛАССА", restart: "Попробовать снова", p100: "Идеальный результат! 💯 Приходите к стенду Mixology за напитком! 🍹✨", p60: "Вы успешно прошли тест! 👏 Загляните на стенд Mixology за сувениром! 👍", p0: "К сожалению, балл низкий. 😢 Попробуем снова? 🚀" },
+            '필리핀': { title: "🎉 Quiz Completed! 🎉", score: "Your Score: ", lbTitle: "🏆 CLASS LEADERBOARD", restart: "Try Again", p100: "Perfect score! 💯 Come to the Mixology booth to claim your special complimentary drink! 🍹✨", p60: "You passed! 👏 Drop by the Mixology booth to claim your reward! 👍", p0: "Aww, you didn't pass. 😢 Click below to try again! 🚀" },
+            '중국': { title: "🎉 问答完成！ 🎉", score: "您的得分：", lbTitle: "🏆 班级/专业实时 leaderboard", restart: "再次挑战", p100: "满分！💯 快来 Mixology 展位领取您的专属特色饮品吧！🍹✨", p60: "通过测试！👏 欢迎顺道前往 Mixology 展位领取您的参与奖励！👍", p0: "太可惜了，没能及格。😢 再次挑战赢取奖品吧！🚀" }
         };
 
         let selectedCountry = "";
@@ -294,13 +333,20 @@
         }
 
         function startQuiz() {
-            const name = document.getElementById('text-studentName').value;
-            const id = document.getElementById('studentId').value;
+            const name = document.getElementById('text-studentName').value.trim();
+            const id = document.getElementById('studentId').value.trim();
 
             if (!name || !id) {
                 alert("이름과 학번을 모두 입력해주세요! (Please enter your Name and Student ID!)");
                 return;
             }
+
+            // XÁC THỰC MÃ ID HỌC SINH
+            if (!validStudentIDs.includes(id)) {
+                alert("등록되지 않은 학번입니다! 올바른 학번을 입력해주세요. (ID không hợp lệ hoặc không có trong danh sách!)");
+                return;
+            }
+
             if (!selectedCountry) {
                 alert("퀴즈를 진행할 국가를 선택해주세요! (Please select a country!)");
                 return;
@@ -313,7 +359,6 @@
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('quiz-screen').style.display = 'block';
             
-            // Thiết lập tên tiêu đề theo tiếng nước đó
             const titles = { '베트남': '🇻🇳 VIỆT NAM QUIZ', '대한민국': '🇰🇷 대한민국 퀴즈', '러시아': '🇷🇺 РОССИЯ ВИКТОРИНА', '필리핀': '🇵🇭 PHILIPPINES QUIZ', '중국': '🇨🇳 中国 问答竞赛' };
             document.getElementById('quiz-title').innerText = titles[selectedCountry];
             loadQuestion();
@@ -356,8 +401,8 @@
             document.getElementById('quiz-screen').style.display = 'none';
             document.getElementById('result-screen').style.display = 'block';
 
-            const name = document.getElementById('text-studentName').value;
-            const id = document.getElementById('studentId').value;
+            const name = document.getElementById('text-studentName').value.trim();
+            const id = document.getElementById('studentId').value.trim();
             const lang = localization[selectedCountry];
 
             document.getElementById('result-title').innerText = lang.title;
@@ -365,15 +410,39 @@
             document.getElementById('score-text').innerText = `${lang.score} ${score} / 100`;
 
             let comment = "";
-            if (score === 100) {
-                comment = lang.p100;
-            } else if (score >= 60) {
-                comment = lang.p60;
-            } else {
-                comment = lang.p0;
-            }
+            if (score === 100) comment = lang.p100;
+            else if (score >= 60) comment = lang.p60;
+            else comment = lang.p0;
+            
             document.getElementById('result-comment').innerText = comment;
             document.getElementById('restart-btn').innerText = lang.restart;
+
+            // XỬ LÝ BẢNG XẾP HẠNG THEO LỚP DỰA TRÊN ID
+            document.getElementById('lb-title').innerText = lang.lbTitle;
+            
+            // Đẩy dữ liệu người chơi hiện tại vào bảng xếp hạng tạm thời
+            let currentLeaderboard = [...mockLeaderboardData, { id: id, name: name, score: score }];
+            // Sắp xếp điểm số từ cao xuống thấp
+            currentLeaderboard.sort((a, b) => b.score - a.score);
+
+            const lbListContainer = document.getElementById('lb-list');
+            lbListContainer.innerHTML = "";
+
+            currentLeaderboard.forEach((user, index) => {
+                const item = document.createElement('div');
+                // Nếu là chính người chơi thì làm nổi bật màu xanh dương
+                if (user.id === id) {
+                    item.className = "leaderboard-item highlight";
+                } else {
+                    item.className = "leaderboard-item";
+                }
+                
+                // Trích xuất lớp tự động từ ID (ví dụ lấy 2 số đầu tiên của ID làm tên lớp)
+                let classPrefix = user.id.substring(0, 2) + "반/班";
+                
+                item.innerHTML = `<span>${index + 1}위. [${classPrefix}] ${user.name}</span> <span>${user.score}점</span>`;
+                lbListContainer.appendChild(item);
+            });
         }
     </script>
 
