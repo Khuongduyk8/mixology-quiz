@@ -27,37 +27,30 @@
     <div class="subtitle">MIXOLOGY TECH CLUB FESTIVAL</div>
 
     <div class="board" id="board-container">
-        <div style="text-align: center; padding: 50px; color: #64748b; font-size: 18px;">⏳ Đang đồng bộ kết nối đám mây...</div>
+        <div style="text-align: center; padding: 50px; color: #64748b; font-size: 18px;">⏳ Đang kết nối máy chủ Google đám mây...</div>
     </div>
 
     <script>
         function listenToScores() {
+            const url = 'https://script.google.com/macros/s/AKfycbzL5z3v8B_7S6XFz_w-YFp_e4B0Vj9pG-pWvNlZf17tO3UfS00U6mC6lSgWd8Z2fG8/exec';
+            
             setInterval(() => {
-                fetch('https://kvdb.io/W4Mh7N9bJqS8Vd2C5xYmZa/scores?t=' + Date.now())
+                fetch(url + '?t=' + Date.now())
                 .then(res => res.json())
-                .then(data => {
-                    if (!data || typeof data !== 'object' || Object.keys(data).length === 0) {
+                .then(scoreArray => {
+                    if (!scoreArray || scoreArray.length === 0) {
                         document.getElementById('board-container').innerHTML = `<div style="text-align: center; padding: 50px; color: #64748b; font-size: 20px;">⏳ Sẵn sàng nhận dữ liệu học sinh nộp bài...</div>`;
                         return;
                     }
                     
-                    let scoreArray = Object.keys(data)
-                        .map(key => data[key])
-                        .filter(user => user && user.name && user.id && user.score !== undefined && !isNaN(user.score));
-
-                    if (scoreArray.length === 0) {
-                        document.getElementById('board-container').innerHTML = `<div style="text-align: center; padding: 50px; color: #64748b; font-size: 20px;">⏳ Chưa có dữ liệu hợp lệ.</div>`;
-                        return;
-                    }
-
-                    // Sắp xếp điểm cao xếp trước, nộp trước xếp trước
+                    // Sắp xếp điểm cao lên trước, ai trùng điểm thì ai nộp trước đứng trước
                     scoreArray.sort((a, b) => b.score - a.score || a.time - b.time);
                     renderLeaderboard(scoreArray.slice(0, 10));
                 })
                 .catch(err => {
-                    document.getElementById('board-container').innerHTML = `<div style="text-align: center; padding: 50px; color: #64748b; font-size: 20px;">⏳ Sẵn sàng nhận dữ liệu học sinh...</div>`;
+                    console.log("Đang đợi đồng bộ...");
                 });
-            }, 2000);
+            }, 3000); // Tự động đồng bộ mượt mà mỗi 3 giây từ Google Sheets
         }
 
         function renderLeaderboard(topList) {

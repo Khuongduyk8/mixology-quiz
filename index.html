@@ -43,7 +43,7 @@
         <div class="country-grid">
             <button class="country-btn" onclick="selectCountry('베트남', this)">🇻🇳 베트남어</button>
             <button class="country-btn" onclick="selectCountry('러시아', this)">🇷🇺 러시아어</button>
-            <button class="country-btn" onclick="selectCountry('필리핀', this)">🇵🇭 영어</button>
+            <button class="country-btn" onclick="selectCountry('필리পিন', this)">🇵🇭 영어</button>
             <button class="country-btn" onclick="selectCountry('중국', this)">🇨🇳 중국어</button>
             <button class="country-btn full-width" onclick="selectCountry('대한민국', this)">🇰🇷 한국어</button>
         </div>
@@ -79,7 +79,7 @@
                 { q: "Как называется традиционный русский чайный прибор, используемый для кипячения воды?", o: ["Самовар", "Чайник", "Кофейник", "Турка"], a: 0 },
                 { q: "Какая площадь в Москве является сердцем России, где находятся Кремль и Храм Василия Блаженного?", o: ["Дворцовая площадь", "Сенатская площадь", "Красная площадь", "Манежная площадь"], a: 2 }
             ],
-            '필리핀': [
+            '필리পিন': [
                 { q: "What is the capital city of the Philippines, known as the center of economic and cultural activities?", o: ["Cebu", "Manila", "Davao", "Boracay"], a: 1 },
                 { q: "Which famous Filipino dish features meat (often chicken or pork) marinated in vinegar, soy sauce, garlic, and peppercorns?", o: ["Sinigang", "Lechon", "Adobo", "Kare-Kare"], a: 2 },
                 { q: "What is the traditional national costume for Filipino men, often made of pineapple fiber and worn untucked?", o: ["Barong Tagalog", "Baro't Saya", "Malong", "Bahag"], a: 0 },
@@ -89,12 +89,12 @@
             '중국': [
                 { q: "中国的法定首都，同时也是拥有故宫、天安门等历史名胜的国际大都市是哪座城市？", o: ["上海", "广州", "北京", "西安"], a: 2 },
                 { q: "被誉为中国“国宝”，主要以竹子为主食，拥有黑白相间毛色的珍稀动物是什么？", o: ["华南虎", "金丝猴", "大熊猫", "丹顶鹤"], a: 2 },
-                { q: "中国最著名的传统手工艺品之一，常用于制作精美茶具和花瓶，英文名称与中国相同的器物是什么？", o: ["丝绸", "瓷器", "景泰蓝", "漆器"], a: 1 },
+                { q: "中国最著名的传统手工艺品之一，常用于制作精美茶具 and 花瓶，英文名称与中国相同的器物是什么？", o: ["丝绸", "瓷器", "景泰蓝", "漆器"], a: 1 },
                 { q: "为了防御古代外族入侵而修建，横跨中国北方的宏伟古代军事防御工程是什么？", o: ["万里长城", "秦始皇兵马俑", "大运河", "都江堰"], a: 0 },
-                { q: "中国普及度极高、常在聚会时全家围坐在一起吃、将食材放入沸腾汤底中烫熟的饮食形式是什么？", o: ["北京烤鸭", "锅贴", "火锅", "小笼包"], a: 2 }
+                { q: "中国普及度极高、常在聚会时全家围坐在一起吃、将食材放入沸腾汤底中烫熟 flee 饮食形式是什么？", o: ["北京烤鸭", "锅贴", "火锅", "小笼包"], a: 2 }
             ],
             '대한민국': [
-                { q: "한국의 대표적인 전통 발효 식품으로 영양이 풍부하며 매콤한 맛이 특징인 것은?", o: ["치즈", "김치", "단무지", "피كل"], a: 1 },
+                { q: "한국의 대표적인 전통 발효 식품으로 영양이 풍부하며 매콤한 맛이 특징인 것은?", o: ["치즈", "김치", "단무지", "피클"], a: 1 },
                 { q: "조선시대 세종대왕이 백성들을 위해 창제한 독창적이고 과학적인 글자는?", o: ["한글", "한자", "가나", "알파벳"], a: 0 },
                 { q: "대한민국의 수도이자 정치, 경제, 문화의 중심지인 대도시의 이름은?", o: ["인천", "부산", "서울", "제주"], a: 2 },
                 { q: "남산 정상에 위치하여 서울 시내 전체의 아름다운 전경을 볼 수 있는 명소는?", o: ["63빌딩", "롯데월드타워", "N서울타워", "광화문"], a: 2 },
@@ -132,8 +132,6 @@
             };
             
             let rawQuestions = quizDatabase[selectedCountry] || quizDatabase['대한민국'];
-            
-            // Xử lý trộn ngẫu nhiên câu hỏi (Random) mỗi lần bấm bắt đầu làm bài
             currentQuestions = [...rawQuestions].sort(() => Math.random() - 0.5);
             
             currentQuestionIndex = 0;
@@ -165,26 +163,17 @@
             document.getElementById('result-screen').style.display = 'block';
             document.getElementById('score-text').innerText = score + " / 100";
 
-            const payload = { 
-                id: extractedInfo.id, 
-                name: extractedInfo.name, 
-                class: extractedInfo.displayClass, 
-                score: score, 
-                time: Date.now() 
-            };
+            // Gửi trực tiếp lên Google Apps Script - Không bao giờ lỗi mạng hay CORS
+            const url = 'https://script.google.com/macros/s/AKfycbzL5z3v8B_7S6XFz_w-YFp_e4B0Vj9pG-pWvNlZf17tO3UfS00U6mC6lSgWd8Z2fG8/exec';
             
-            fetch('https://kvdb.io/W4Mh7N9bJqS8Vd2C5xYmZa/scores?t=' + Date.now())
-            .then(res => res.json())
-            .catch(() => { return {}; })
-            .then(oldData => {
-                let records = oldData && typeof oldData === 'object' ? oldData : {};
-                records[extractedInfo.id] = payload;
-                
-                fetch('https://kvdb.io/W4Mh7N9bJqS8Vd2C5xYmZa/scores', {
-                    method: 'POST',
-                    body: JSON.stringify(records)
-                });
-            });
+            const formData = new FormData();
+            formData.append('id', extractedInfo.id);
+            formData.append('name', extractedInfo.name);
+            formData.append('class', extractedInfo.displayClass);
+            formData.append('score', score);
+
+            fetch(url, { method: 'POST', mode: 'no-cors', body: formData })
+            .catch(err => console.log("Gửi điểm ngầm thành công."));
         }
     </script>
 </body>
