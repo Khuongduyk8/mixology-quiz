@@ -66,39 +66,139 @@
     <script>
         const quizDatabase = {
             '베트남': [
-                { q: "Loại quả nào thường được dùng làm biểu tượng và nguyên liệu chính cho món trà chanh giã tay hot trend?", o: ["Quả Táo", "Quả Chanh nước hoa Quảng Đông", "Quả Cam", "Quả Dưa hấu"], a: 1 },
-                { q: "Thành phần cốt lõi nào tạo nên vị béo ngậy đặc trưng của món Cà phê trứng nổi tiếng Hà Nội?", o: ["Lòng đỏ trứng gà băm kem", "Sữa tươi hạt chia", "Phô mai chảy", "Bơ thực vật"], a: 0 },
-                { q: "Món nước giải khát dân dã nào của Việt Nam thường được ép từ cây mía tươi kết hợp với quất (tắc)?", o: ["Nước dừa", "Nước mía", "Rượu nếp", "Trà đá"], a: 1 },
-                { q: "Dụng cụ truyền thống làm bằng kim loại đặt trên miệng cốc dùng để pha cà phê phin Việt Nam gọi là gì?", o: ["Cốc Shaker", "Phin cà phê", "Ấm đun siêu tốc", "Máy pha Espresso"], a: 1 },
-                { q: "Vào ngày Tết cổ truyền, người Việt Nam thường uống trà cùng với loại bánh ngọt truyền thống hình vuông nào?", o: ["Bánh mì", "Bánh chưng", "Bánh quy Nhật", "Bánh Pizza"], a: 1 }
+                { q: "Quả nào làm nguyên liệu chính cho trà chanh giã tay?", o: ["Táo", "Chanh Quảng Đông", "Cam", "Dưa hấu"], a: 1 },
+                { q: "Thành phần tạo vị béo đặc trưng của Cà phê trứng Hà Nội?", o: ["Lòng đỏ trứng gà", "Sữa tươi hạt chia", "Phô mai", "Bơ"], a: 0 },
+                { q: "Nước giải khát ép từ cây mía tươi kết hợp với quả gì?", o: ["Dừa", "Quất (Tắc)", "Chanh leo", "Dứa"], a: 1 },
+                { q: "Dụng cụ kim loại truyền thống để pha cà phê ở Việt Nam?", o: ["Shaker", "Phin", "Ấm đun", "Máy Espresso"], a: 1 },
+                { q: "Ngày Tết cổ truyền, người Việt thường ăn bánh gì hình vuông?", o: ["Bánh mì", "Bánh chưng", "Bánh giầy", "Bánh tét"], a: 1 },
+                { q: "Món ăn quốc hồn quốc túy của Việt Nam có nước dùng bò/gà?", o: ["Mì Quảng", "Bún chả", "Phở", "Hủ tiếu"], a: 2 },
+                { q: "Trang phục truyền thống của người phụ nữ Việt Nam là gì?", o: ["Sườn xám", "Áo dài", "Hanbok", "Kimono"], a: 1 },
+                { q: "Thủ đô của nước Cộng hòa Xã hội Chủ nghĩa Việt Nam?", o: ["Hồ Chí Minh", "Đà Nẵng", "Hà Nội", "Huế"], a: 2 },
+                { q: "Hòn đảo lớn nhất Việt Nam, mệnh danh là Đảo Ngọc?", o: ["Phú Quốc", "Cát Bà", "Côn Đảo", "Lý Sơn"], a: 0 },
+                { q: "Vịnh biển nào của Việt Nam được UNESCO công nhận là kỳ quan thiên nhiên thế giới?", o: ["Vịnh Nha Trang", "Vịnh Hạ Long", "Vịnh Lăng Cô", "Vịnh Xuân Đài"], a: 1 },
+                { q: "Món bánh mì Việt Nam thường được kẹp với nhân gì chủ yếu?", o: ["Mứt dâu", "Pate và chả lụa", "Bơ đậu phộng", "Phô mai ngọt"], a: 1 },
+                { q: "Nhạc cụ truyền thống Việt Nam chỉ có duy nhất một dây gọi là gì?", o: ["Đàn tỳ bà", "Đàn bầu", "Đàn tranh", "Đàn nhị"], a: 1 },
+                { q: "Trái cây nào ở miền Tây Nam Bộ có vỏ gai, mùi nồng đặc trưng?", o: ["Mít", "Sầu riêng", "Chôm chôm", "Măng cụt"], a: 1 },
+                { q: "Loại hạt nào thường được rang muối, ăn nhiều vào dịp Tết?", o: ["Hạt dưa", "Hạt tiêu", "Hạt cà phê", "Hạt đậu nành"], a: 0 },
+                { q: "Đồng bằng nào là vựa lúa lớn nhất của Việt Nam?", o: ["Đồng bằng sông Hồng", "Đồng bằng sông Cửu Long", "Đồng bằng miền Trung", "Đồng bằng Bắc Bộ"], a: 1 },
+                { q: "Tết Trung Thu tại Việt Nam thường diễn ra vào ngày mấy âm lịch?", o: ["Rằm tháng Giêng", "Rằm tháng Bảy", "Rằm tháng Tám", "Mùng 5 tháng 5"], a: 2 },
+                { q: "Loại hoa nào được xem là Quốc hoa không chính thức của Việt Nam?", o: ["Hoa mai", "Hoa đào", "Hoa sen", "Hoa hồng"], a: 2 },
+                { q: "Thành phố nào ở Việt Nam nổi tiếng với tên gọi 'Thành phố ngàn hoa'?", o: ["Sapa", "Đà Lạt", "Vũng Tàu", "Nha Trang"], a: 1 },
+                { q: "Cà phê Robusta Việt Nam nổi tiếng thế giới vì đặc tính gì?", o: ["Vị rất chua", "Đậm đà và hàm lượng caffeine cao", "Không có mùi", "Vị ngọt lịm"], a: 1 },
+                { q: "Món ăn nào làm từ gạo nếp, thường có nhiều màu sắc bắt mắt?", o: ["Cơm tấm", "Xôi", "Bánh cuốn", "Bánh mì"], a: 1 },
+                { q: "Sông nào chảy qua thủ đô Hà Nội?", o: ["Sông Hương", "Sông Hồng", "Sông Sài Gòn", "Sông Hàn"], a: 1 },
+                { q: "Trò chơi dân gian nào thường xuất hiện ở các lễ hội nước Việt Nam?", o: ["Múa rối nước", "Đua xe đạp", "Cờ vua", "Trượt băng"], a: 0 },
+                { q: "Địa danh nào nổi tiếng với các ngôi nhà cổ và đèn lồng lung linh?", o: ["Phố cổ Hội An", "Địa đạo Củ Chi", "Tràng An", "Phong Nha"], a: 0 },
+                { q: "Loại nón truyền thống che nắng mưa gắn liền với tà áo dài?", o: ["Nón lưỡi trai", "Nón lá", "Nón cối", "Mũ tai bèo"], a: 1 },
+                { q: "Món ăn đặc sản Nam Bộ ăn kèm rau sống và nước mắm chua ngọt?", o: ["Bánh chưng", "Bánh xèo", "Phở bò", "Mì Ý"], a: 1 }
             ],
             '러시아': [
-                { q: "Как называется традиционный русский суп на основе свеклы, который обычно подают со сметаной?", o: ["Щи", "Борщ", "Солянка", "Окрошка"], a: 1 },
-                { q: "Какая всемирно известная традиционная русская деревянная игрушка состоит из вложенных друг в друга кукол?", o: ["Чебурашка", "Матрёшка", "Неваляшка", "Дымковская игрушка"], a: 1 },
-                { q: "Какое глубокое и знаменитое озеро в Сибири является самым глубоким пресноводным озером в мире?", o: ["Ладожское озеро", "Каспийское море", "Озеро Байкал", "Онежское озеро"], a: 2 },
-                { q: "Как называется традиционный русский чайный прибор, используемый для кипячения воды?", o: ["Самовар", "Чайник", "Кофейник", "Турка"], a: 0 },
-                { q: "Какая площадь в Москве является сердцем России, где находятся Кремль и Храм Василия Блаженного?", o: ["Дворцовая площадь", "Сенатская площадь", "Красная площадь", "Манежная площадь"], a: 2 }
+                { q: "Традиционный русский суп на основе свеклы?", o: ["Щи", "Борщ", "Солянка", "Окрошка"], a: 1 },
+                { q: "Знаменитая русская деревянная кукла-игрушка?", o: ["Чебурашка", "Матрёшка", "Неваляшка", "Игрушка"], a: 1 },
+                { q: "Самое глубокое пресноводное озеро в мире в Сибири?", o: ["Ладожское", "Каспийское", "Байкал", "Онежское"], a: 2 },
+                { q: "Русский чайный прибор для кипячения воды?", o: ["Самовар", "Чайник", "Кофейник", "Турка"], a: 0 },
+                { q: "Сердце Москвы, где находится Кремль?", o: ["Дворцовая", "Сенатская", "Красная площадь", "Манежная"], a: 2 },
+                { q: "Какое животное считается неофициальным символом России?", o: ["Орел", "Медведь", "Волк", "Тигр"], a: 1 },
+                { q: "Традиционный русский напиток из ржаного хлеба?", o: ["Квас", "Компот", "Кисель", "Морс"], a: 0 },
+                { q: "Традиционное русское блюдо из тонкого теста с начинкой из мяса?", o: ["Блины", "Пельмени", "Пирожки", "Чебуреки"], a: 1 },
+                { q: "Как называется традиционный русский зимний головной убор?", o: ["Кепка", "Ушанка", "Шляпа", "Берет"], a: 1 },
+                { q: "Какой город является второй (культурной) столицей России?", o: ["Сочи", "Казань", "Санкт-Петербург", "Новосибирск"], a: 2 },
+                { q: "Какое дерево чаще всего воспевается в русских песнях?", o: ["Дуб", "Берёза", "Сосна", "Клён"], a: 1 },
+                { q: "Как называется традиционный русский круглый хлеб?", o: ["Каравай", "Батон", "Бублик", "Лаваш"], a: 0 },
+                { q: "Какой танец является самым известным русским народным танцем?", o: ["Калинка", "Балет", "Танго", "Вальс"], a: 0 },
+                { q: "Как называется русская традиционная баня?", o: ["Сауна", "Баня", "Хаммам", "Термы"], a: 1 },
+                { q: "Какое культовое кондитерское изделие часто пекут на Масленицу?", o: ["Торт", "Блины", "Пирог", "Печенье"], a: 1 },
+                { q: "Какая река является самой длинной в Европе и течет в России?", o: ["Лена", "Енисей", "Волга", "Амур"], a: 2 },
+                { q: "Какой музыкальный инструмент имеет треугольную форму?", o: ["Гитара", "Балалайка", "Гармонь", "Гусли"], a: 1 },
+                { q: "Кто был первым космонавтом Земли?", o: ["Гагарин", "Леонов", "Титов", "Армстронг"], a: 0 },
+                { q: "Как называется зимняя традиционная обувь из валяной шерсти?", o: ["Сапоги", "Валенки", "Ботинки", "Кроссовки"], a: 1 },
+                { q: "Традиционные русские пироги с открытой начинкой?", o: ["Ватрушки", "Расстегаи", "Кулебяка", "Блины"], a: 1 },
+                { q: "Какой цвет на флаге России находится посередине?", o: ["Белый", "Синий", "Красный", "Зеленый"], a: 1 },
+                { q: "В каком океане находится остров Новая Земля?", o: ["Тихий", "Северный Ледовитый", "Атлантический", "Индийский"], a: 1 },
+                { q: "Как называется кремлевская башня с главными часами?", o: ["Спасская", "Никольская", "Боровицкая", "Тайницкая"], a: 0 },
+                { q: "Какое блюдо из картофеля и майонеза популярно на Новый год?", o: ["Оливье", "Винегрет", "Цезарь", "Мимоза"], a: 0 },
+                { q: "Как звали самого известного русского поэта?", o: ["Пушкин", "Лермонтов", "Есенин", "Толстой"], a: 0 }
             ],
             '필리পিন': [
-                { q: "What is the capital city of the Philippines, known as the center of economic and cultural activities?", o: ["Cebu", "Manila", "Davao", "Boracay"], a: 1 },
-                { q: "Which famous Filipino dish features meat (often chicken or pork) marinated in vinegar, soy sauce, garlic, and peppercorns?", o: ["Sinigang", "Lechon", "Adobo", "Kare-Kare"], a: 2 },
-                { q: "What is the traditional national costume for Filipino men, often made of pineapple fiber and worn untucked?", o: ["Barong Tagalog", "Baro't Saya", "Malong", "Bahag"], a: 0 },
-                { q: "Which Philippine island resort is world-famous for its powdery white sand beaches and vibrant nightlife?", o: ["Palawan", "Siargao", "Boracay", "Bohol"], a: 2 },
-                { q: "What unique and colorful public transport vehicle is considered an iconic cultural symbol of the Philippines?", o: ["Tuk-tuk", "Jeepney", "Kalesa", "Trishaw"], a: 1 }
+                { q: "What is the capital city of the Philippines?", o: ["Cebu", "Manila", "Davao", "Boracay"], a: 1 },
+                { q: "Famous Filipino dish made of chicken/pork in soy sauce and vinegar?", o: ["Sinigang", "Lechon", "Adobo", "Kare-Kare"], a: 2 },
+                { q: "Traditional national costume for Filipino men?", o: ["Barong Tagalog", "Baro't Saya", "Malong", "Bahag"], a: 0 },
+                { q: "Philippine island resort famous for powdery white sand?", o: ["Palawan", "Siargao", "Boracay", "Bohol"], a: 2 },
+                { q: "Iconic and colorful public transport in the Philippines?", o: ["Tuk-tuk", "Jeepney", "Kalesa", "Trishaw"], a: 1 },
+                { q: "What is the national fruit of the Philippines?", o: ["Mango", "Banana", "Pineapple", "Coconut"], a: 0 },
+                { q: "Which popular Filipino dessert is a mix of shaved ice, milk, and sweet beans?", o: ["Halo-halo", "Leche Flan", "Ube Halaya", "Turon"], a: 0 },
+                { q: "What is the national flower of the Philippines?", o: ["Sampaguita", "Rose", "Orchid", "Sunflower"], a: 0 },
+                { q: "Which Filipino hero is celebrated on December 30?", o: ["Andres Bonifacio", "Jose Rizal", "Emilio Aguinaldo", "Apolinario Mabini"], a: 1 },
+                { q: "What is the currency of the Philippines?", o: ["Dollar", "Peso", "Yen", "Ringgit"], a: 1 },
+                { q: "Which chocolate-like hills can be found in Bohol?", o: ["Chocolate Hills", "Green Hills", "Rocky Mountains", "Sweet Hills"], a: 0 },
+                { q: "What is the oldest city in the Philippines?", o: ["Manila", "Cebu City", "Vigan", "Iloilo"], a: 1 },
+                { q: "Which volcano in the Philippines is famous for its perfect cone shape?", o: ["Taal", "Mayon", "Pinatubo", "Apo"], a: 1 },
+                { q: "What is the popular Filipino street food made of deep-fried banana?", o: ["Turon", "Maruya", "Banana Cue", "Kwek-Kwek"], a: 2 },
+                { q: "Which dance is the national dance involving bamboo poles?", o: ["Tinikling", "Cariñosa", "Pandanggo", "Maglalatik"], a: 0 },
+                { q: "What is the predominantly practiced religion in the Philippines?", o: ["Buddhism", "Islam", "Catholicism", "Hinduism"], a: 2 },
+                { q: "How many main island groups form the Philippines?", o: ["2", "3", "4", "5"], a: 1 },
+                { q: "Which language is the national language of the Philippines?", o: ["English", "Tagalog (Filipino)", "Spanish", "Cebuano"], a: 1 },
+                { q: "What animal is considered the national animal of the Philippines?", o: ["Carabao", "Eagle", "Tarsier", "Lion"], a: 0 },
+                { q: "What is the name of the roasted whole pig served at festivals?", o: ["Adobo", "Lechon", "Crispy Pata", "Sisig"], a: 1 },
+                { q: "Which Spanish explorer arrived in the Philippines in 1521?", o: ["Columbus", "Magellan", "Cortez", "Da Gama"], a: 1 },
+                { q: "What sour soup dish uses tamarind as its base?", o: ["Bulalo", "Tinola", "Sinigang", "Mami"], a: 2 },
+                { q: "Which Filipino boxer won world titles in 8 divisions?", o: ["Manny Pacquiao", "Nonito Donaire", "Flash Elorde", "Pancho Villa"], a: 0 },
+                { q: "What purple yam is used widely in Filipino sweets?", o: ["Ube", "Taro", "Camote", "Cassava"], a: 0 },
+                { q: "What historical walled city is located in Manila?", o: ["Intramuros", "Vigan", "Corregidor", "Mactan"], a: 0 }
             ],
             '중국': [
-                { q: "中国的法定首都，同时也是拥有故宫、天安门等历史名胜的国际大都市是哪座城市？", o: ["上海", "广州", "北京", "西安"], a: 2 },
-                { q: "被誉为中国“国宝”，主要以竹子为主食，拥有黑白相间毛色的珍稀动物是什么？", o: ["华南虎", "金丝猴", "大熊猫", "丹顶鹤"], a: 2 },
-                { q: "中国最著名的传统手工艺品之一，常用于制作精美茶具 and 花瓶，英文名称与中国相同的器物是什么？", o: ["丝绸", "瓷器", "景泰蓝", "漆器"], a: 1 },
-                { q: "为了防御古代外族入侵而修建，横跨中国北方的宏伟古代军事防御工程是什么？", o: ["万里长城", "秦始皇兵马俑", "大运河", "都江堰"], a: 0 },
-                { q: "中国普及度极高、常在聚会时全家围坐在一起吃、将食材放入沸腾汤底中烫熟 flee 饮食形式是什么？", o: ["北京烤鸭", "锅贴", "火锅", "小笼包"], a: 2 }
+                { q: "中国的法定首都城市是哪座？", o: ["上海", "广州", "北京", "西安"], a: 2 },
+                { q: "被誉为中国“国宝”的动物是什么？", o: ["华南虎", "金丝猴", "大熊猫", "丹顶鹤"], a: 2 },
+                { q: "精美茶具常用的传统手工艺器物是什么？", o: ["丝绸", "瓷器", "景泰蓝", "漆器"], a: 1 },
+                { q: "横跨中国北方的宏伟古代军事防御工程是什么？", o: ["万里长城", "兵马俑", "大运河", "都江堰"], a: 0 },
+                { q: "全家围坐在一起吃、将食材放入沸腾汤底的饮食是什么？", o: ["北京烤鸭", "锅贴", "火锅", "小笼包"], a: 2 },
+                { q: "中国的传统节日中，哪一个是农历正月初一？", o: ["中秋节", "端午节", "春节", "清明节"], a: 2 },
+                { q: "中国古代最著名的思想家和教育家是谁？", o: ["老子", "孔子", "庄子", "孟子"], a: 1 },
+                { q: "端午节期间，人们通常会吃什么传统食物？", o: ["月饼", "饺子", "粽子", "汤圆"], a: 2 },
+                { q: "中国最长的河流是哪一条？", o: ["黄河", "长江", "珠江", "淮河"], a: 1 },
+                { q: "中国传统戏剧中，最著名的剧种是什么？", o: ["豫剧", "越剧", "京剧", "黄梅戏"], a: 2 },
+                { q: "丝绸之路的核心商品，由蚕丝织成的是什么？", o: ["棉布", "丝绸", "毛呢", "麻布"], a: 1 },
+                { q: "中秋节时人们赏月并品尝的传统糕点是什么？", o: ["年糕", "月饼", "发糕", "绿豆糕"], a: 1 },
+                { q: "中国古代四大发明不包括以下哪一项？", o: ["造纸术", "指南针", "电灯", "火药"], a: 2 },
+                { q: "以辣味闻名，拥有武侯祠和宽窄巷子的省会城市是？", o: ["成都", "重庆", "昆明", "贵阳"], a: 0 },
+                { q: "中国女性的传统经典服装是什么？", o: ["韩服", "和服", "旗袍", "沙丽"], a: 2 },
+                { q: "中国的主要官方通用语言是什么？", o: ["粤语", "普通话", "闽南语", "客家话"], a: 1 },
+                { q: "世界第八大奇迹，位于西安的古代地下军队雕塑是什么？", o: ["秦始皇兵马俑", "龙门石窟", "敦煌莫高窟", "乐山大佛"], a: 0 },
+                { q: "中国人在过年时习惯挂在门前、象征喜庆的物品是什么？", o: ["红灯笼", "中国结", "春联", "以上都是"], a: 3 },
+                { q: "中国传统的泡茶、饮茶技艺和文化被称为？", o: ["茶道", "武术", "书法", "剪纸"], a: 0 },
+                { q: "著名的江南水乡城市，以园林闻名的是哪里？", o: ["苏州", "南京", "无锡", "常州"], a: 0 },
+                { q: "中国国旗上有几颗五角星？", o: ["三颗", "四颗", "五颗", "六颗"], a: 2 },
+                { q: "十二生肖中的第一个动物是什么？", o: ["牛", "虎", "鼠", "龙"], a: 2 },
+                { q: "中国功夫最知名的祖庭寺庙是哪一座？", o: ["白马寺", "少林寺", "大慈恩寺", "悬空寺"], a: 1 },
+                { q: "中国北方过年时必吃、外形像元宝的面食是什么？", o: ["面条", "饺子", "馒头", "年糕"], a: 1 },
+                { q: "象征高洁、常在冬季盛开的中国传统名花是什么？", o: ["牡丹", "梅花", "菊花", "兰花"], a: 1 }
             ],
             '대한민국': [
-                { q: "한국의 대표적인 전통 발효 식품으로 영양이 풍부하며 매콤한 맛이 특징인 것은?", o: ["치즈", "김치", "단무지", "피클"], a: 1 },
-                { q: "조선시대 세종대왕이 백성들을 위해 창제한 독창적이고 과학적인 글자는?", o: ["한글", "한자", "가나", "알파벳"], a: 0 },
-                { q: "대한민국의 수도이자 정치, 경제, 문화의 중심지인 대도시의 이름은?", o: ["인천", "부산", "서울", "제주"], a: 2 },
-                { q: "남산 정상에 위치하여 서울 시내 전체의 아름다운 전경을 볼 수 있는 명소는?", o: ["63빌딩", "롯데월드타워", "N서울타워", "광화문"], a: 2 },
-                { q: "음력 8월 15일로 가족들이 모여 송편을 빚고 달을 보며 소원을 비는 한국의 명절은?", o: ["설날", "추석", "단오", "동지"], a: 1 }
+                { q: "한국의 대표적인 전통 발효 식품으로 매콤한 맛이 특징인 것은?", o: ["치즈", "김치", "단무지", "피클"], a: 1 },
+                { q: "조선시대 세종대왕이 백성들을 위해 창제한 독창적인 글자는?", o: ["한글", "한자", "가나", "알파벳"], a: 0 },
+                { q: "대한민국의 수도이자 중심지인 대도시의 이름은?", o: ["인천", "부산", "서울", "제주"], a: 2 },
+                { q: "남산 정상에 위치하여 서울 전체의 전경을 볼 수 있는 명소는?", o: ["63빌딩", "롯데타워", "N서울타워", "광화문"], a: 2 },
+                { q: "음력 8월 15일로 송편을 빚고 달을 보며 소원을 비는 명절은?", o: ["설날", "추석", "단오", "동지"], a: 1 },
+                { q: "한국의 전통 의복으로 선이 아름다운 옷은?", o: ["기모노", "치파오", "한복", "아오자이"], a: 2 },
+                { q: "우리나라에서 가장 큰 섬이자 화산섬인 곳은?", o: ["독도", "울릉도", "제주도", "강화도"], a: 2 },
+                { q: "한국의 화폐 단위는 무엇인가요?", o: ["원", "엔", "달러", "위안"], a: 0 },
+                { q: "조선시대 왕들이 살았던 서울의 대표적인 궁궐은?", o: ["경복궁", "덕수궁", "창덕궁", "창경궁"], a: 0 },
+                { q: "한국인들이 생일에 주로 끓여 먹는 국은?", o: ["김치찌개", "미역국", "된장국", "떡국"], a: 1 },
+                { q: "우리나라의 국화(나라의 꽃)는 무엇인가요?", o: ["장미", "국화", "무궁화", "벚꽃"], a: 2 },
+                { q: "한국의 새해 첫날(음력 1월 1일)에 먹는 대표 음식은?", o: ["떡국", "송편", "잡채", "전"], a: 0 },
+                { q: "태극기에 사용된 네 개의 괘가 아닌 것은?", o: ["건", "곤", "감", "손"], a: 3 },
+                { q: "대한민국 공식 국가(노래)의 제목은?", o: ["아리랑", "애국가", "독도는 우리땅", "고향의 봄"], a: 1 },
+                { q: "밥에 여러 가지 나물과 고기, 고추장을 넣어 비벼 먹는 음식은?", o: ["불고기", "비빔밥", "김밥", "떡볶이"], a: 1 },
+                { q: "제2의 도시이자 최대의 항구 도시는 어디인가요?", o: ["인천", "대구", "부산", "광주"], a: 2 },
+                { q: "한국의 대표적인 민요로 유네스코 인류무형유산인 것은?", o: ["아리랑", "판소리", "잡가", "타령"], a: 0 },
+                { q: "세계적인 인기를 끌고 있는 한국의 대중음악 장르는?", o: ["J-POP", "K-POP", "C-POP", "POP"], a: 1 },
+                { q: "전통 무술로 올림픽 정식 종목인 것은?", o: ["유도", "태권도", "검도", "우슈"], a: 1 },
+                { q: "한국의 대표적인 전통 현악기로 12줄로 된 것은?", o: ["거문고", "가야금", "해금", "아쟁"], a: 1 },
+                { q: "독도가 행정구역상 속해 있는 도는 어디인가요?", o: ["강원도", "경상북도", "울릉도", "제주도"], a: 1 },
+                { q: "단군왕검이 고조선을 세운 것을 기념하는 국경일은?", o: ["개천절", "광복절", "삼일절", "제헌절"], a: 0 },
+                { q: "한국에서 가장 높은 산(남한 기준)은 어디인가요?", o: ["설악산", "지리산", "한라산", "백두산"], a: 2 },
+                { q: "전통 가옥의 바닥을 따뜻하게 데우는 한국 고유의 난방 방식은?", o: ["온돌", "벽난로", "라디에이터", "코타츠"], a: 0 },
+                { q: "조선왕조를 세운 태조의 이름은 무엇인가요?", o: ["이방원", "이성계", "이도", "이산"], a: 1 }
             ]
         };
 
@@ -132,7 +232,10 @@
             };
             
             let rawQuestions = quizDatabase[selectedCountry] || quizDatabase['대한민국'];
-            currentQuestions = [...rawQuestions].sort(() => Math.random() - 0.5);
+            
+            // Xáo trộn ngẫu nhiên (Random) toàn bộ 25 câu hỏi, sau đó chỉ bốc lấy đúng 5 câu làm đề thi
+            let randomizedPool = [...rawQuestions].sort(() => Math.random() - 0.5);
+            currentQuestions = randomizedPool.slice(0, 5);
             
             currentQuestionIndex = 0;
             score = 0;
@@ -163,17 +266,19 @@
             document.getElementById('result-screen').style.display = 'block';
             document.getElementById('score-text').innerText = score + " / 100";
 
-            // Gửi trực tiếp lên Google Apps Script - Không bao giờ lỗi mạng hay CORS
-            const url = 'https://script.google.com/macros/s/AKfycbzL5z3v8B_7S6XFz_w-YFp_e4B0Vj9pG-pWvNlZf17tO3UfS00U6mC6lSgWd8Z2fG8/exec';
+            const payload = { 
+                id: extractedInfo.id, 
+                name: extractedInfo.name, 
+                class: extractedInfo.displayClass, 
+                score: score, 
+                time: Date.now() 
+            };
             
-            const formData = new FormData();
-            formData.append('id', extractedInfo.id);
-            formData.append('name', extractedInfo.name);
-            formData.append('class', extractedInfo.displayClass);
-            formData.append('score', score);
-
-            fetch(url, { method: 'POST', mode: 'no-cors', body: formData })
-            .catch(err => console.log("Gửi điểm ngầm thành công."));
+            // Đẩy trực tiếp lên Cổng máy chủ Firebase biệt lập
+            fetch(`https://mixology-quiz-default-rtdb.firebaseio.com/scores/${extractedInfo.id}.json`, {
+                method: 'PUT',
+                body: JSON.stringify(payload)
+            });
         }
     </script>
 </body>

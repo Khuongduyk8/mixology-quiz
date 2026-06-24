@@ -27,30 +27,30 @@
     <div class="subtitle">MIXOLOGY TECH CLUB FESTIVAL</div>
 
     <div class="board" id="board-container">
-        <div style="text-align: center; padding: 50px; color: #64748b; font-size: 18px;">⏳ Đang kết nối máy chủ Google đám mây...</div>
+        <div style="text-align: center; padding: 50px; color: #64748b; font-size: 18px;">⏳ Đang đồng bộ kết nối máy chủ thời gian thực...</div>
     </div>
 
     <script>
         function listenToScores() {
-            const url = 'https://script.google.com/macros/s/AKfycbzL5z3v8B_7S6XFz_w-YFp_e4B0Vj9pG-pWvNlZf17tO3UfS00U6mC6lSgWd8Z2fG8/exec';
-            
             setInterval(() => {
-                fetch(url + '?t=' + Date.now())
+                fetch('https://mixology-quiz-default-rtdb.firebaseio.com/scores.json')
                 .then(res => res.json())
-                .then(scoreArray => {
-                    if (!scoreArray || scoreArray.length === 0) {
-                        document.getElementById('board-container').innerHTML = `<div style="text-align: center; padding: 50px; color: #64748b; font-size: 20px;">⏳ Sẵn sàng nhận dữ liệu học sinh nộp bài...</div>`;
+                .then(data => {
+                    if (!data) {
+                        document.getElementById('board-container').innerHTML = `<div style="text-align: center; padding: 50px; color: #64748b; font-size: 20px;">⏳ Hệ thống đã sẵn sàng. Đang đợi thí sinh nộp bài...</div>`;
                         return;
                     }
                     
-                    // Sắp xếp điểm cao lên trước, ai trùng điểm thì ai nộp trước đứng trước
+                    let scoreArray = Object.keys(data).map(key => data[key]);
+                    
+                    // Sắp xếp điểm cao lên trước, nộp trước lên trước
                     scoreArray.sort((a, b) => b.score - a.score || a.time - b.time);
                     renderLeaderboard(scoreArray.slice(0, 10));
                 })
                 .catch(err => {
-                    console.log("Đang đợi đồng bộ...");
+                    document.getElementById('board-container').innerHTML = `<div style="text-align: center; padding: 50px; color: #64748b; font-size: 20px;">⏳ Đang kết nối lại mạng...</div>`;
                 });
-            }, 3000); // Tự động đồng bộ mượt mà mỗi 3 giây từ Google Sheets
+            }, 1500); // Tốc độ quét cực nhanh 1.5 giây một lần
         }
 
         function renderLeaderboard(topList) {

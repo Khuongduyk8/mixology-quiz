@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mixology Tech Club - Leaderboard</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #020617; color: #ffffff; margin: 0; padding: 40px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; box-sizing: border-box; }
+        h1 { font-size: 42px; color: #f43f5e; text-shadow: 0 0 20px rgba(244, 63, 94, 0.6); margin-bottom: 5px; letter-spacing: 2px; font-weight: 800; }
+        .subtitle { font-size: 18px; color: #38bdf8; margin-bottom: 40px; font-weight: bold; letter-spacing: 1px; }
+        .leaderboard-table { width: 100%; max-width: 900px; border-collapse: separate; border-spacing: 0 12px; }
+        th { font-size: 18px; color: #94a3b8; padding: 15px; text-align: left; text-transform: uppercase; letter-spacing: 1px; }
+        
+        /* Đã sửa lỗi Selector CSS ở đây */
+        .rank-row { background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(10px); }
+        .rank-row td { border-top: 1px solid rgba(255, 255, 255, 0.05); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        
+        td { padding: 20px; font-size: 20px; font-weight: 600; color: #f1f5f9; }
+        td:first-child { border-top-left-radius: 14px; border-bottom-left-radius: 14px; border-left: 1px solid rgba(255, 255, 255, 0.05); font-size: 24px; font-weight: 900; width: 80px; text-align: center; }
+        td:last-child { border-top-right-radius: 14px; border-bottom-right-radius: 14px; border-right: 1px solid rgba(255, 255, 255, 0.05); font-size: 24px; font-weight: 800; color: #34d399; text-align: right; width: 120px; }
+        
+        /* Hiệu ứng VIP rực rỡ cho Top 3 thiết kế lại đổ bóng chuẩn */
+        .rank-1 { background: linear-gradient(90deg, #b45309, #f59e0b) !important; }
+        .rank-1 td { color: #0f172a !important; border: none !important; }
+        .rank-1 td:last-child { color: #0f172a !important; }
+        
+        .rank-2 { background: linear-gradient(90deg, #475569, #94a3b8) !important; }
+        .rank-2 td { color: #0f172a !important; border: none !important; }
+        .rank-2 td:last-child { color: #0f172a !important; }
+        
+        .rank-3 { background: linear-gradient(90deg, #7c2d12, #ea580c) !important; }
+        .rank-3 td { color: #ffffff !important; border: none !important; }
+        .rank-3 td:last-child { color: #ffffff !important; }
+        
+        .no-data { text-align: center; color: #64748b; font-size: 20px; padding: 60px; font-weight: normal; }
+    </style>
+</head>
+<body>
+
+    <h1>🏆 REAL-TIME LEADERBOARD 🏆</h1>
+    <div class="subtitle">MIXOLOGY TECH CLUB FESTIVAL</div>
+
+    <table class="leaderboard-table">
+        <thead>
+            <tr>
+                <th style="text-align: center;">Hạng</th>
+                <th>Lớp</th>
+                <th>MSHS</th>
+                <th>Họ và Tên</th>
+                <th style="text-align: right;">Điểm số</th>
+            </tr>
+        </thead>
+        <tbody id="leaderboard-body">
+            <tr>
+                <td colspan="5" class="no-data">⏳ Đang kết nối máy chủ thời gian thực...</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        const firebaseConfig = {
+            databaseURL: "https://mixology-quiz-default-rtdb.firebaseio.com"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        database.ref('scores').on('value', (snapshot) => {
+            const container = document.getElementById('leaderboard-body');
+            container.innerHTML = "";
+
+            if (!snapshot.exists()) {
+                container.innerHTML = `<tr><td colspan="5" class="no-data">⏳ Hệ thống đã sẵn sàng. Đang đợi thí sinh nộp bài...</td></tr>`;
+                return;
+            }
+
+            let studentsList = [];
+            snapshot.forEach((childSnapshot) => {
+                studentsList.push(childSnapshot.val());
+            });
+
+            // Sắp xếp: Điểm cao lên trước -> Nộp trước xếp trước
+            studentsList.sort((a, b) => {
+                if (b.score !== a.score) {
+                    return b.score - a.score;
+                }
+                return a.time - b.time;
+            });
+
+            // Lấy tối đa Top 10 người cao nhất để không vỡ màn hình TV
+            let topTen = studentsList.slice(0, 10);
+
+            topTen.forEach((student, index) => {
+                const rank = index + 1;
+                let rankClass = "rank-row";
+                let rankDisplay = `#${rank}`;
+
+                if (rank === 1) { rankClass = "rank-1"; rankDisplay = "🥇"; }
+                else if (rank === 2) { rankClass = "rank-2"; rankDisplay = "🥈"; }
+                else if (rank === 3) { rankClass = "rank-3"; rankDisplay = "🥉"; }
+
+                const row = document.createElement('tr');
+                row.className = rankClass;
+                row.innerHTML = `
+                    <td style="text-align: center;">${rankDisplay}</td>
+                    <td>${student.class || '일반'}</td>
+                    <td>${student.id}</td>
+                    <td>${student.name}</td>
+                    <td style="text-align: right;">${student.score}점</td>
+                `;
+                container.appendChild(row);
+            });
+        });
+    </script>
+</body>
+</html>
