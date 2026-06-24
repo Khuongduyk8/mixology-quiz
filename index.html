@@ -66,11 +66,11 @@
     <script>
         const quizDatabase = {
             '베트남': [
-                { q: "Trang phục truyền thống của Việt Nam được làm bằng lụa, có tà áo dài xẻ hai bên mặc cùng với quần là gì?", o: ["Sườn xám", "Áo dài", "Hanbok", "Kimono"], a: 1 },
-                { q: "Tên loại cà phê đậm đặc của Việt Nam pha với sữa đặc có đường và đá là gì?", o: ["Cà phê sữa đá", "Americano", "Cafe Latte", "Espresso"], a: 0 },
-                { q: "Thành phố có lịch sử ngàn năm văn hiến và hiện là thủ đô của Việt Nam tên là gì?", o: ["Hồ Chí Minh", "Đà Nẵng", "Hà Nội", "Nha Trang"], a: 2 },
-                { q: "Món ăn truyền thống nổi tiếng thế giới của Việt Nam có bánh phở, nước dùng bò hoặc gà là gì?", o: ["Mì Ramen", "Pad Thai", "Phở", "Mì Ý"], a: 2 },
-                { q: "Di sản thiên nhiên thế giới nổi tiếng của Việt Nam với hơn 3.000 hòn đảo đá vôi nhô lên trên biển là gì?", o: ["Hạ Long", "Sapa", "Mũi Né", "Phú Quốc"], a: 0 }
+                { q: "Loại quả nào thường được dùng làm biểu tượng và nguyên liệu chính cho món trà chanh giã tay hot trend?", o: ["Quả Táo", "Quả Chanh nước hoa Quảng Đông", "Quả Cam", "Quả Dưa hấu"], a: 1 },
+                { q: "Thành phần cốt lõi nào tạo nên vị béo ngậy đặc trưng của món Cà phê trứng nổi tiếng Hà Nội?", o: ["Lòng đỏ trứng gà băm kem", "Sữa tươi hạt chia", "Phô mai chảy", "Bơ thực vật"], a: 0 },
+                { q: "Món nước giải khát dân dã nào của Việt Nam thường được ép từ cây mía tươi kết hợp với quất (tắc)?", o: ["Nước dừa", "Nước mía", "Rượu nếp", "Trà đá"], a: 1 },
+                { q: "Dụng cụ truyền thống làm bằng kim loại đặt trên miệng cốc dùng để pha cà phê phin Việt Nam gọi là gì?", o: ["Cốc Shaker", "Phin cà phê", "Ấm đun siêu tốc", "Máy pha Espresso"], a: 1 },
+                { q: "Vào ngày Tết cổ truyền, người Việt Nam thường uống trà cùng với loại bánh ngọt truyền thống hình vuông nào?", o: ["Bánh mì", "Bánh chưng", "Bánh quy Nhật", "Bánh Pizza"], a: 1 }
             ],
             '러시아': [
                 { q: "Как называется традиционный русский суп на основе свеклы, который обычно подают со сметаной?", o: ["Щи", "Борщ", "Солянка", "Окрошка"], a: 1 },
@@ -91,10 +91,10 @@
                 { q: "被誉为中国“国宝”，主要以竹子为主食，拥有黑白相间毛色的珍稀动物是什么？", o: ["华南虎", "金丝猴", "大熊猫", "丹顶鹤"], a: 2 },
                 { q: "中国最著名的传统手工艺品之一，常用于制作精美茶具和花瓶，英文名称与中国相同的器物是什么？", o: ["丝绸", "瓷器", "景泰蓝", "漆器"], a: 1 },
                 { q: "为了防御古代外族入侵而修建，横跨中国北方的宏伟古代军事防御工程是什么？", o: ["万里长城", "秦始皇兵马俑", "大运河", "都江堰"], a: 0 },
-                { q: "中国普及度极高、常在聚会时全家围坐在一起吃、将食材放入沸腾汤底中烫熟 flee 饮食形式是什么？", o: ["北京烤鸭", "锅贴", "火锅", "小笼包"], a: 2 }
+                { q: "中国普及度极高、常在聚会时全家围坐在一起吃、将食材放入沸腾汤底中烫熟的饮食形式是什么？", o: ["北京烤鸭", "锅贴", "火锅", "小笼包"], a: 2 }
             ],
             '대한민국': [
-                { q: "한국의 대표적인 전통 발효 식품으로 영양이 풍부하며 매콤한 맛이 특징인 것은?", o: ["치즈", "김치", "단무지", "피클"], a: 1 },
+                { q: "한국의 대표적인 전통 발효 식품으로 영양이 풍부하며 매콤한 맛이 특징인 것은?", o: ["치즈", "김치", "단무지", "피كل"], a: 1 },
                 { q: "조선시대 세종대왕이 백성들을 위해 창제한 독창적이고 과학적인 글자는?", o: ["한글", "한자", "가나", "알파벳"], a: 0 },
                 { q: "대한민국의 수도이자 정치, 경제, 문화의 중심지인 대도시의 이름은?", o: ["인천", "부산", "서울", "제주"], a: 2 },
                 { q: "남산 정상에 위치하여 서울 시내 전체의 아름다운 전경을 볼 수 있는 명소는?", o: ["63빌딩", "롯데월드타워", "N서울타워", "광화문"], a: 2 },
@@ -131,8 +131,9 @@
                 displayClass: `${parseInt(grade)}학년 ${parseInt(classNum)}반` 
             };
             
-            // Lấy đúng bộ câu hỏi theo ngôn ngữ đã chọn và Trộn ngẫu nhiên (Random)
             let rawQuestions = quizDatabase[selectedCountry] || quizDatabase['대한민국'];
+            
+            // Xử lý trộn ngẫu nhiên câu hỏi (Random) mỗi lần bấm bắt đầu làm bài
             currentQuestions = [...rawQuestions].sort(() => Math.random() - 0.5);
             
             currentQuestionIndex = 0;
